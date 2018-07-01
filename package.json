@@ -1,6 +1,6 @@
 {
-    "name": "vscode-markdown-rainbow-header",
-    "displayName": "Markdown Rainbow Header",
+    "name": "vscode-markdown-header-coloring",
+    "displayName": "Markdown Header Coloring",
     "description": "",
     "version": "0.0.1",
     "publisher": "satokaz",
@@ -11,16 +11,31 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:extension.sayHello"
+        "*"
     ],
     "main": "./out/extension",
     "contributes": {
-        "commands": [
-            {
-                "command": "extension.sayHello",
-                "title": "Hello World"
+        "configuration": {
+            "title": "Markdown Header Coloring",
+            "properties": {
+                "markdown-header-coloring.destroyMode": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "markdown-header-coloring.textDecoration": {
+                    "type": "string",
+                    "default": ""
+                },
+                "markdown-header-coloring.fontColor": {
+                    "type": "string",
+                    "default": ""
+                },
+                "markdown-header-coloring.backgroundColor": {
+                    "type": "string",
+                    "default": ""
+                }
             }
-        ]
+        }
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",
@@ -30,11 +45,10 @@
         "test": "npm run compile && node ./node_modules/vscode/bin/test"
     },
     "devDependencies": {
-        "typescript": "^2.6.1",
-        "vscode": "^1.1.6",
-        "tslint": "^5.8.0",
+        "@types/mocha": "^2.2.42",
         "@types/node": "^7.0.43",
-        "@types/mocha": "^2.2.42"
+        "typescript": "^2.6.1",
+        "vscode": "^1.1.6"
     },
     "dependencies": {
         "hex2rgba": "0.0.1"
