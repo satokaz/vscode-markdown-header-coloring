@@ -1,65 +1,66 @@
-# vscode-markdown-rainbow-header README
-
-This is the README for your extension "vscode-markdown-rainbow-header". After writing up a brief description, we recommend including the following sections.
+# Markdown Header Coloring Extension README
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+This extension provides the function of coloring the Markdown Header tag on the editor.
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+This extension only applies to markdown documents.
+No commands are provided.
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
+Some settings use tricks to embed CSS.
 
 This extension contributes the following settings:
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+* `markdown-header-coloring.textDecoration`: (default: empty)
+
+  Setting to decorate character string of markdown header.
+
+  ```
+  "markdown-header-coloring.textDecoration": "position: relative; display: inline-block; padding: 1px; font-size: 1.5em; text-shadow: 1px  1px 1px rgba(255,255,255,0.1), -1px  1px 1px rgba(255,255,255,0.1), 1px -1px 1px rgba(255,255,255,0.1), -1px -1px 1px rgba(255,255,255,0.1), 1px  0px 1px rgba(255,255,255,0.1), 0px  1px 1px rgba(255,255,255,0.1), -1px  0px 1px rgba(255,255,255,0.1), 0px -1px 1px rgba(255,255,255,0.1);"
+  ```
+
+* `markdown-header-coloring.fontColor`: (default: empty)
+
+  Set font color of Markdown header. If you do not like the default coloring, you can overwrite it with this setting.
+
+  However, it is limited to one color.
+
+  ```
+
+  ```
+  
+
+* `markdown-header-coloring.backgroundColor`: (default: empty)
+
+  Set the background color of Markdown header line.
+  
+  example:
+
+    ```
+    "markdown-rainbow-header.backgroundColor": "background: #43c6ac; /* fallback for old browsers */ background: -webkit-linear-gradient(to left, #43c6ac, #191654); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to left, #43c6ac, #191654); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */"
+    
+    ```
+    
+    https://uigradients.com
+
+* `markdown-header-coloring.destroyMode`: (default: false)
+
+  Update coloring every time an event occurs. Specifically, it changes each time a single character is entered.
+
+  Please be careful because it uses many CPU resources.
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+* `Reload Window` commmand or Restart of vscode instance is necessary to apply setting
 
-## Release Notes
+## References
 
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+* [Rainbow&#32;String&#32;-&#32;Visual&#32;Studio&#32;Marketplace](https://marketplace.visualstudio.com/items?itemName=wk-j.vscode-rainbow-string)
 
 -----------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
 
 **Enjoy!**

@@ -1,29 +1,41 @@
-'use strict';
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+import * as vscode from 'vscode'
+import { rainborColors } from "./rainbow";
+import { decorate } from './decorator';
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+    console.log('Congratulations, your extension "vscode-rainbow-string" is now active!');
 
-    // Use the console to output diagnostic information (console.log) and errors (console.error)
-    // This line of code will only be executed once when your extension is activated
-    console.log('Congratulations, your extension "vscode-markdown-rainbow-header" is now active!');
+    // let config = vscode.workspace.getConfiguration("rainbowString") as any as { extensions: string[] }
 
-    // The command has been defined in the package.json file
-    // Now provide the implementation of the command with  registerCommand
-    // The commandId parameter must match the command field in package.json
-    let disposable = vscode.commands.registerCommand('extension.sayHello', () => {
-        // The code you place here will be executed every time your command is executed
+    // vscode.workspace.onDidChangeConfiguration(() => {
+    //     config = vscode.workspace.getConfiguration("rainbowString") as any as { extensions: string[] }
+    // });
 
-        // Display a message box to the user
-        vscode.window.showInformationMessage('Hello World!');
-    });
+    // vscode.workspace.onDidSaveTextDocument(e => {
+    //     var file = vscode.window.activeTextEditor.document.fileName;
+    //     if (config.extensions.some(x => file.endsWith(x))) {
+    //         decorate()
+    //     }
+    // })
 
-    context.subscriptions.push(disposable);
+    vscode.window.onDidChangeVisibleTextEditors(e => {
+        if (vscode.window.activeTextEditor.document.languageId == 'markdown') {
+            decorate();
+        }
+    })
+
+    vscode.workspace.onDidChangeTextDocument(e => {
+        if (vscode.window.activeTextEditor.document.languageId == 'markdown') {
+            decorate();
+        }
+    })
+    vscode.workspace.onDidChangeConfiguration(e => {
+        if (vscode.window.activeTextEditor.document.languageId == 'markdown') {
+            decorate();
+        }
+    })
+
+    decorate();
 }
 
-// this method is called when your extension is deactivated
-export function deactivate() {
-}
+export function deactivate() { }
