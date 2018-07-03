@@ -1,29 +1,25 @@
 import * as vscode from "vscode"
 import { rainborColors } from "./rainbow";
-import * as hex2rgba from "hex2rgba";
 
 let textDecorationSetting = vscode.workspace.getConfiguration('markdown-header-coloring').get<string>('textDecoration');
-let fontColorSetting = vscode.workspace.getConfiguration('markdown-header-coloring').get<string>('fontColor');
-let backgroundColor = vscode.workspace.getConfiguration('markdown-header-coloring').get<string>('backgroundColor');
+let fontColorSetting = vscode.workspace.getConfiguration('markdown-header-coloring').get<string | boolean>('fontColor');
+let fontColorOpacity = vscode.workspace.getConfiguration('markdown-header-coloring').get<number>('fontColorOpacity');
+let backgroundColor = vscode.workspace.getConfiguration('markdown-header-coloring').get<string | boolean>('backgroundColor');
+let backgroundColorOpacity = vscode.workspace.getConfiguration('markdown-header-coloring').get<number>('backgroundColorOpacity');
 
 let colors = Array.from(rainborColors);
+// let colors2 = Array.from(rainborColors2);
+// let colors = shuffle(Array.from(rainborColors));
+// console.log(colors);
+// console.log(`rgba(${colors[1]}, ${backgroundColorOpacity})`);
 
 let rainbowsLine = colors.map(x => vscode.window.createTextEditorDecorationType({
     isWholeLine: true,
-    backgroundColor: (backgroundColor == "" ) ? hex2rgba(x, 0.3) : backgroundColor,
-    overviewRulerColor: (fontColorSetting == "") ? x : fontColorSetting,
-    color: (fontColorSetting == "") ? x : fontColorSetting,
+    backgroundColor: (backgroundColor === "" ) ? `rgba(${x}, ${backgroundColorOpacity})` : (backgroundColor == false ) ? "" : backgroundColor,
+    color: (fontColorSetting === "") ? `rgba(${x}, ${fontColorOpacity})` : (fontColorSetting === false) ? "" : fontColorSetting,
+    overviewRulerColor: (fontColorSetting === "") ? `rgba(${x}, 1.0)` : fontColorSetting,
     rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed,
     textDecoration: textDecorationSetting,
-    // textDecoration: `position: relative; display: inline-block; padding: 1px; font-size: 1.5em; text-shadow : 
-    // 1px  1px 1px rgba(255,255,255,0.1),
-    // -1px  1px 1px rgba(255,255,255,0.1),
-    //  1px -1px 1px rgba(255,255,255,0.1),
-    // -1px -1px 1px rgba(255,255,255,0.1),
-    //  1px  0px 1px rgba(255,255,255,0.1),
-    //  0px  1px 1px rgba(255,255,255,0.1),
-    // -1px  0px 1px rgba(255,255,255,0.1),
-    //  0px -1px 1px rgba(255,255,255,0.1);`,
 }));
 
 vscode.workspace.onDidChangeConfiguration(e => {
@@ -40,43 +36,63 @@ function getRandomInt(min: number, max: number): number {
 export function decorate() {
 
     let editor = vscode.window.activeTextEditor;
-    let text = editor.document.getText().split('\n');
 
     if(!editor) {
         return;
     }
 
-    // let regex = /(^#\s|^(.)#+\s)/gm;
-    let regex = /(^#{1,}\s)/g;
+    let text = editor.document.getText();
+
+    let regex = /(^#{1,}\s)/gm;
     let decorators = colors.map(color => []);
     let match: RegExpMatchArray;
     let offset: number;
 
-    if (vscode.workspace.getConfiguration('markdown-rainbow-header').get<boolean>('destroyMode')) {
+    if (vscode.workspace.getConfiguration('markdown-header-coloring').get<boolean>('destroyMode')) {
         offset = getRandomInt(0, colors.length);
-    } else {
-        offset = 10;
+    } else { 
+        offset = colors.length;
     }
 
-    text.forEach((v, i) => {
-        match = v.match(regex);
-        if (!match) {
-            return;
-        }
-        // console.log(` ${i} match =`, match);
+    while ((match = regex.exec(text))) {
+        let lines: string[] = [...(match[1] || match[2])];
         offset--;
 
-        let matchLine = i + 1;
-        let rainbowIndex = Math.abs((i + offset) % colors.length);
-        // console.log("rainbowIndex =", rainbowIndex);
-        let start = new vscode.Position(Number(matchLine) -1, 0);
-        decorators[rainbowIndex].push(new vscode.Range(start, start));
-        // console.log('decorators[rainbowIndex] =', decorators[rainbowIndex])
+        lines.forEach((_, index) => {
+            let matchIndex = match.index + 1;
+            let rainbowIndex =  Math.abs((index + offset) % colors.length);
+            let startIndex = matchIndex;
+            let start = editor.document.positionAt(startIndex);
+            let end = start;
+            decorators[rainbowIndex].push(new vscode.Range(start, end));
+            // decorators[rainbowIndex].push(new vscode.Range(start, end));
+            // console.log('rainbowIndex =', rainbowIndex);
+        });
+    }
+
+    rainbowsLine.forEach((v, index) => {
+        rainbowsLine[index].dispose;
     });
 
     decorators.forEach(async (d, index) => {
-        // console.log(d);
-        rainbowsLine[index].dispose;
         editor.setDecorations(rainbowsLine[index], d);
     })
+}
+
+function shuffle(array) {
+    let currentIndex = array.length, temporaryValue, randomIndex ;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+    }
+    return array;
 }

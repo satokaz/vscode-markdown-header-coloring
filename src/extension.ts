@@ -29,13 +29,29 @@ export function activate(context: vscode.ExtensionContext) {
             decorate();
         }
     })
+
     vscode.workspace.onDidChangeConfiguration(e => {
         if (vscode.window.activeTextEditor.document.languageId == 'markdown') {
             decorate();
         }
     })
 
-    decorate();
+    vscode.window.onDidChangeTextEditorViewColumn(e => {
+        if (vscode.window.activeTextEditor.document.languageId == 'markdown') {
+            decorate();
+        }
+    })
+
+    vscode.window.onDidChangeVisibleTextEditors(e => {
+        if (vscode.window.activeTextEditor.document.languageId == 'markdown') {
+            decorate();
+        }
+    })
+    
+
+    if (vscode.window.activeTextEditor.document.languageId == 'markdown') {
+        decorate();
+    }
 }
 
 export function deactivate() { }

@@ -1,8 +1,8 @@
 {
     "name": "vscode-markdown-header-coloring",
     "displayName": "Markdown Header Coloring",
-    "description": "",
-    "version": "0.0.1",
+    "description": "This extension decorates the Markdown header on the editor",
+    "version": "0.0.2",
     "publisher": "satokaz",
     "engines": {
         "vscode": "^1.24.0"
@@ -27,12 +27,26 @@
                     "default": ""
                 },
                 "markdown-header-coloring.fontColor": {
-                    "type": "string",
+                    "type": [
+                        "string",
+                        "boolean"
+                    ],
                     "default": ""
                 },
+                "markdown-header-coloring.fontColorOpacity": {
+                    "type": "number",
+                    "default": 1.0
+                },
                 "markdown-header-coloring.backgroundColor": {
-                    "type": "string",
+                    "type": [
+                        "string",
+                        "boolean"
+                    ],
                     "default": ""
+                },
+                "markdown-header-coloring.backgroundColorOpacity": {
+                    "type": "number",
+                    "default": 0.1
                 }
             }
         }
@@ -50,7 +64,5 @@
         "typescript": "^2.6.1",
         "vscode": "^1.1.6"
     },
-    "dependencies": {
-        "hex2rgba": "0.0.1"
-    }
+    "dependencies": {}
 }
