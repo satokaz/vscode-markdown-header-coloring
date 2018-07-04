@@ -3,7 +3,7 @@ function RGB2Color(r, g, b) {
     return Math.floor(r) + ',' + Math.floor(g) + ',' + Math.floor(b); 
 }
 
-function* makeColorGradient(frequency1, frequency2, frequency3, phase1, phase2, phase3, center = 128, width = 127, len = 20) {
+function* makeColorGradient(frequency1, frequency2, frequency3, phase1, phase2, phase3, center = 128, width = 127, len = 50) {
     for (var i = 0; i < len; ++i) {
         var red = Math.sin(frequency1 * i + phase1) * width + center;
         var grn = Math.sin(frequency2 * i + phase2) * width + center;
@@ -17,9 +17,9 @@ function* makeColorGradient(frequency1, frequency2, frequency3, phase1, phase2, 
 // export const rainborColors = makeColorGradient(.0, .1, .9, 0, 1, 5)
 // export const rainborColors = makeColorGradient(.5, .5, .5, 0, 2, 4)
 
-// export const rainborColors = makeColorGradient(.3, .3, .3, 0, 2, 4);
-// export const rainborColors = makeColorGradient(.2, .2, .2, 0, 2, 4)
+export const rainborColors = makeColorGradient(.3, .3, .3, 0, 2, 4);
+// export const rainborColors = makeColorGradient(.2, .2, .2, 0, 2, 4);
 
 // export const rainborColors = makeColorGradient(2 * Math.PI/6 , 2 * Math.PI/6, 2 * Math.PI/6, 0, 2, 4);
 
-export const rainborColors = makeColorGradient(.3, .3, .3, 0, 2, 4);
+// export const rainborColors = makeColorGradient(.0, .2, .4, 0, 2, 4);
