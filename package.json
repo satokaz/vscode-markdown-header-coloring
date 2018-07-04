@@ -2,7 +2,7 @@
     "name": "vscode-markdown-header-coloring",
     "displayName": "Markdown Header Coloring",
     "description": "This extension decorates the Markdown header on the editor",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "publisher": "satokaz",
     "homepage": "https://github.com/satokaz/vscode-markdown-header-coloring",
     "icon": "images/icon.png",
@@ -68,7 +68,7 @@
         "@types/mocha": "^2.2.42",
         "@types/node": "^7.0.43",
         "typescript": "^2.6.1",
-        "vscode": "^1.1.6"
+        "vscode": "^1.1.18"
     },
     "dependencies": {}
 }
