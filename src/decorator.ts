@@ -6,6 +6,10 @@ let fontColorSetting = vscode.workspace.getConfiguration('markdown-header-colori
 let fontColorOpacity = vscode.workspace.getConfiguration('markdown-header-coloring').get<number>('fontColorOpacity');
 let backgroundColor = vscode.workspace.getConfiguration('markdown-header-coloring').get<string | boolean>('backgroundColor');
 let backgroundColorOpacity = vscode.workspace.getConfiguration('markdown-header-coloring').get<number>('backgroundColorOpacity');
+let overviewRulerColor = vscode.workspace.getConfiguration('markdown-header-coloring').get<number>('overviewRulerColor');
+let afterTextDecoration = vscode.workspace.getConfiguration('markdown-header-coloring').get<number>('afterTextDecoration');
+let beforeTextDecoration = vscode.workspace.getConfiguration('markdown-header-coloring').get<number>('beforeTextDecoration');
+
 
 let colors = Array.from(rainborColors);
 // let colors2 = Array.from(rainborColors2);
@@ -15,6 +19,16 @@ let colors = Array.from(rainborColors);
 
 let rainbowsLine = colors.map(x => vscode.window.createTextEditorDecorationType({
     isWholeLine: true,
+    before: {
+        // textDecoration: `${beforeTextDecoration}`
+        textDecoration: ""
+    },
+    after: {
+        contentText: "",
+        // textDecoration: `${afterTextDecoration}`
+        textDecoration:""
+    },
+
     backgroundColor: (backgroundColor === "" ) ? `rgba(${x}, ${backgroundColorOpacity})` : (backgroundColor == false ) ? "" : backgroundColor,
     color: (fontColorSetting === "") ? `rgba(${x}, ${fontColorOpacity})` : (fontColorSetting === false) ? "" : fontColorSetting,
     overviewRulerColor: (fontColorSetting === "") ? `rgba(${x}, 1.0)` : fontColorSetting,
@@ -22,12 +36,6 @@ let rainbowsLine = colors.map(x => vscode.window.createTextEditorDecorationType(
     textDecoration: textDecorationSetting,
 }));
 
-vscode.workspace.onDidChangeConfiguration(e => {
-    if (vscode.window.activeTextEditor.document.languageId == 'markdown') {
-        backgroundColor = vscode.workspace.getConfiguration('markdown-header-coloring').get<string>('backgroundColor');
-        decorate();
-    }
-})
 
 function getRandomInt(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -59,16 +67,24 @@ export function decorate() {
         let lines: string[] = [...(match[1] || match[2])];
         offset--;
 
-        lines.forEach((_, index) => {
-            let matchIndex = match.index + 1;
-            let rainbowIndex =  Math.abs((index + offset) % colors.length);
-            let startIndex = matchIndex;
-            let start = editor.document.positionAt(startIndex);
-            let end = start;
-            decorators[rainbowIndex].push(new vscode.Range(start, end));
-            // decorators[rainbowIndex].push(new vscode.Range(start, end));
-            // console.log('rainbowIndex =', rainbowIndex);
-        });
+        if (backgroundColor === "") {
+            lines.forEach((_, index) => {
+                let matchIndex = match.index + 1;
+                let rainbowIndex =  Math.abs((index + offset) % colors.length);
+                let startIndex = matchIndex;
+                let start = editor.document.positionAt(startIndex);
+                let end = start;
+                decorators[rainbowIndex].push(new vscode.Range(start, end));
+            });
+        } else {
+            lines.forEach((_, index) => {
+                let matchIndex = match.index + 1;
+                let startIndex = matchIndex;
+                let start = editor.document.positionAt(startIndex);
+                let end = start;
+                decorators[index].push(new vscode.Range(start, end));
+            });
+        }
     }
 
     rainbowsLine.forEach((v, index) => {
@@ -80,20 +96,20 @@ export function decorate() {
     })
 }
 
-function shuffle(array) {
-    let currentIndex = array.length, temporaryValue, randomIndex ;
+// function shuffle(array) {
+//     let currentIndex = array.length, temporaryValue, randomIndex ;
 
-    // While there remain elements to shuffle...
-    while (0 !== currentIndex) {
+//     // While there remain elements to shuffle...
+//     while (0 !== currentIndex) {
 
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
+//     // Pick a remaining element...
+//     randomIndex = Math.floor(Math.random() * currentIndex);
+//     currentIndex -= 1;
 
-    // And swap it with the current element.
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
-    }
-    return array;
-}
+//     // And swap it with the current element.
+//     temporaryValue = array[currentIndex];
+//     array[currentIndex] = array[randomIndex];
+//     array[randomIndex] = temporaryValue;
+//     }
+//     return array;
+// }

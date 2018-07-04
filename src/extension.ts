@@ -10,14 +10,7 @@ export function activate(context: vscode.ExtensionContext) {
     // vscode.workspace.onDidChangeConfiguration(() => {
     //     config = vscode.workspace.getConfiguration("rainbowString") as any as { extensions: string[] }
     // });
-
-    // vscode.workspace.onDidSaveTextDocument(e => {
-    //     var file = vscode.window.activeTextEditor.document.fileName;
-    //     if (config.extensions.some(x => file.endsWith(x))) {
-    //         decorate()
-    //     }
-    // })
-
+    
     vscode.window.onDidChangeVisibleTextEditors(e => {
         if (vscode.window.activeTextEditor.document.languageId == 'markdown') {
             decorate();
@@ -41,13 +34,6 @@ export function activate(context: vscode.ExtensionContext) {
             decorate();
         }
     })
-
-    vscode.window.onDidChangeVisibleTextEditors(e => {
-        if (vscode.window.activeTextEditor.document.languageId == 'markdown') {
-            decorate();
-        }
-    })
-    
 
     if (vscode.window.activeTextEditor.document.languageId == 'markdown') {
         decorate();
