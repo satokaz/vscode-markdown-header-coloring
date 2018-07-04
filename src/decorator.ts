@@ -51,7 +51,8 @@ export function decorate() {
     if (vscode.workspace.getConfiguration('markdown-header-coloring').get<boolean>('destroyMode')) {
         offset = getRandomInt(0, colors.length);
     } else { 
-        offset = colors.length;
+        offset = Math.floor(2 * Math.PI/6);
+        // colors.length;
     }
 
     while ((match = regex.exec(text))) {

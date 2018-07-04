@@ -4,6 +4,12 @@
 
 This extension provides the function of coloring the Markdown Header tag on the editor.
 
+![](https://raw.githubusercontent.com/satokaz/vscode-markdown-header-coloring/assets/images/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88%202018-07-04%209.11.45.png)
+
+![](https://raw.githubusercontent.com/satokaz/vscode-markdown-header-coloring/assets/images/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88%202018-07-04%209.20.22.png)
+
+By default, it will be colored according to the number of headers as shown in the screenshot above.
+
 ## Requirements
 
 * This extension only applies to markdown documents.
@@ -21,20 +27,24 @@ This extension contributes the following settings:
 
   **Example 1:**
 
+  Set the font size to 1.5em and drop shadows.
+
   ```json
   "markdown-header-coloring.textDecoration": "position: relative; display: inline-block; padding: 1px; font-size: 1.5em; text-shadow :1px  1px 1px rgba(255,255,255,0.08),-1px  1px 1px rgba(255,255,255,0.08),1px -1px 1px rgba(255,255,255,0.08),-1px -1px 1px rgba(255,255,255,0.08),1px  0px 1px rgba(255,255,255,0.08),0px  1px 1px rgba(255,255,255,0.08),-1px  0px 1px rgba(255,255,255,0.08),0px -1px 1px rgba(255,255,255,0.08);",
   ```
+  ![](https://raw.githubusercontent.com/satokaz/vscode-markdown-header-coloring/assets/images/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88%202018-07-04%209.24.06.png)
+
 
   **Example 2:**
 
-  Color string of "markdown header" to rainbow color, convert text to upper case. Display font size slightly larger.
+  Color string of "markdown header" to rainbow color, convert text to upper case. Display font size to 1.5em.
 
   ```json
   "markdown-header-coloring.textDecoration": "position: absolute, padding: 1px; font-size: 1.5em;text-transform: uppercase;background: linear-gradient(to right, #f00 0%, #f80 14.28%, #dd0 28.56%, #0d0 42.85%, #0dd 57.14%, #00f 71.42%, #e0e 85.71%, #f00 100%) 0% center / 200% auto;background-clip: text;-webkit-background-clip: text;text-fill-color: transparent;-webkit-text-fill-color: transparent;"
   ```
-  ![](https://raw.githubusercontent.com/satokaz/vscode-markdown-header-coloring/assets/images/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88%202018-07-04%200.39.45.png)
 
-  ![](https://raw.githubusercontent.com/satokaz/vscode-markdown-header-coloring/assets/images/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88%202018-07-04%200.42.05.png)
+  ![](https://raw.githubusercontent.com/satokaz/vscode-markdown-header-coloring/assets/images/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88%202018-07-04%209.31.25.png)
+
 
 * `markdown-header-coloring.fontColor`: (default: empty)
 
@@ -104,7 +114,25 @@ This extension contributes the following settings:
 
   ![](https://raw.githubusercontent.com/satokaz/vscode-markdown-header-coloring/assets/images/md_header_destroy.gif)
 
+
+## Example
+
+  Example combining `markdown-header-coloring.textDecoration` and `markdown-header-coloring.backgroundColor`.
+
+  Add the following to settings.json and execute `Reload Window` commmand:
+    
+  ```json
+  "markdown-header-coloring.textDecoration": "position: absolute, padding: 1px; font-size: 1.5em;text-transform: uppercase;background: linear-gradient(to right, #f00 0%, #f80 14.28%, #dd0 28.56%, #0d0 42.85%, #0dd 57.14%, #00f 71.42%, #e0e 85.71%, #f00 100%) 0% center / 200% auto;background-clip: text;-webkit-background-clip: text;text-fill-color: transparent;-webkit-text-fill-color: transparent;"
+  "markdown-header-coloring.backgroundColor": "background: rgba(67, 198, 172, 0.6); /* fallback for old browsers */ background: -webkit-linear-gradient(to left, rgba(67, 198, 172, 0.6), rgba(25, 22, 84, 0.6)); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to left, rgba(67, 198, 172, 0.6), rgba(25, 22, 84, 0.6)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */",
+
+  ```
+
+  ![](https://raw.githubusercontent.com/satokaz/vscode-markdown-header-coloring/assets/images/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88%202018-07-04%200.39.45.png)
+
+  ![](https://raw.githubusercontent.com/satokaz/vscode-markdown-header-coloring/assets/images/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88%202018-07-04%200.42.05.png)
+
   
+  Please make use of CSS and make your own coloring
 
 ## Known Issues
 
@@ -118,3 +146,4 @@ This extension contributes the following settings:
 -----------------------------------------------------------------------------------------------------------
 
 **Enjoy!**
+
