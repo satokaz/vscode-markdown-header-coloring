@@ -122,7 +122,7 @@ This extension contributes the following settings:
   Add the following to settings.json and execute `Reload Window` commmand:
     
   ```json
-  "markdown-header-coloring.textDecoration": "position: absolute, padding: 1px; font-size: 1.5em;text-transform: uppercase;background: linear-gradient(to right, #f00 0%, #f80 14.28%, #dd0 28.56%, #0d0 42.85%, #0dd 57.14%, #00f 71.42%, #e0e 85.71%, #f00 100%) 0% center / 200% auto;background-clip: text;-webkit-background-clip: text;text-fill-color: transparent;-webkit-text-fill-color: transparent;"
+  "markdown-header-coloring.textDecoration": "position: absolute, padding: 1px; font-size: 1.5em;text-transform: uppercase;background: linear-gradient(to right, #f00 0%, #f80 14.28%, #dd0 28.56%, #0d0 42.85%, #0dd 57.14%, #00f 71.42%, #e0e 85.71%, #f00 100%) 0% center / 200% auto;background-clip: text;-webkit-background-clip: text;text-fill-color: transparent;-webkit-text-fill-color: transparent;",
   "markdown-header-coloring.backgroundColor": "background: rgba(67, 198, 172, 0.6); /* fallback for old browsers */ background: -webkit-linear-gradient(to left, rgba(67, 198, 172, 0.6), rgba(25, 22, 84, 0.6)); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to left, rgba(67, 198, 172, 0.6), rgba(25, 22, 84, 0.6)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */",
 
   ```
