@@ -1,16 +1,9 @@
 import * as vscode from 'vscode'
-import { rainborColors } from "./rainbow";
 import { decorate } from './decorator';
 
 export function activate(context: vscode.ExtensionContext) {
-    console.log('Congratulations, your extension "vscode-rainbow-string" is now active!');
+    console.log('Congratulations, your extension "vscode-ramarkdown-header-coloring" is now active!');
 
-    // let config = vscode.workspace.getConfiguration("rainbowString") as any as { extensions: string[] }
-
-    // vscode.workspace.onDidChangeConfiguration(() => {
-    //     config = vscode.workspace.getConfiguration("rainbowString") as any as { extensions: string[] }
-    // });
-    
     vscode.window.onDidChangeVisibleTextEditors(e => {
         if (vscode.window.activeTextEditor.document.languageId == 'markdown') {
             decorate();
