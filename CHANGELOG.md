@@ -1,7 +1,5 @@
 # Change Log
-All notable changes to the "vscode-markdown-rainbow-header" extension will be documented in this file.
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+## 0.0.4
 
-## [Unreleased]
-- Initial release
+* To reduce the CPU load, do not generate coloring arrays
