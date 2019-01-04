@@ -55,7 +55,7 @@ export function decorate() {
         offset = getRandomInt(0, colors.length);
     } else { 
         // offset = 1;
-        offset = colors.length;
+        // offset = colors.length;
     }
 
     while ((match = regex.exec(text))) {
@@ -82,26 +82,26 @@ export function decorate() {
 
         // console.log('lines', lines);
 
-        if (backgroundColor === "") {
-            offset--;
+        // if (backgroundColor === "") {
             lines.forEach((v, index) => {
                 // console.log('v =', v);
                 let matchIndex = match.index + 1;
                 let startIndex = matchIndex;
                 let start = editor.document.positionAt(startIndex);
                 let end = start;
+
                 // 結局、rainbowIndex は 0 のママで decorators[0] に push され続けてるからって大丈夫だったってことか。。。
                 decorators[0].push(new vscode.Range(start, end));
             });
-        } else {
-            lines.forEach((_, index) => {
-                let matchIndex = match.index + 1;
-                let startIndex = matchIndex;
-                let start = editor.document.positionAt(startIndex);
-                let end = start;
-                decorators[index].push(new vscode.Range(start, end));
-            });
-        }
+        // } else {
+        //     lines.forEach((_, index) => {
+        //         let matchIndex = match.index + 1;
+        //         let startIndex = matchIndex;
+        //         let start = editor.document.positionAt(startIndex);
+        //         let end = start;
+        //         decorators[index].push(new vscode.Range(start, end));
+        //     });
+        // }
     }
 
     rainbowsLine.forEach((v, index) => {
