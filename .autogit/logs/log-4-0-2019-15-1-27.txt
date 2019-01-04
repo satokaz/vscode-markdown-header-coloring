@@ -1,0 +1,28 @@
+-------------------- Auto-Git Log --------------------
+		Fri Jan 04 2019 15:01:27 GMT+0900 (JST)
+------------------------------------------------------
+
+Modified files:
+* .vscode/launch.json
+* README.md
+* package-lock.json
+* package.json
+* src/decorator.ts
+* src/extension.ts
+* tsconfig.json
+
+
+Created files:
+* .autogit/autogit.json
+* images/1.jpg
+* images/Sun_Microsystems_logo.svg
+* images/block.gif
+* images/esa_agenaide_hakuchou.png
+* images/test.png
+* images/test2.png
+
+
+Deleted files:
+
+
+Renamed files:

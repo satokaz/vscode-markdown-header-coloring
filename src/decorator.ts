@@ -24,7 +24,8 @@ let rainbowsLine = colors.map(x => vscode.window.createTextEditorDecorationType(
     },
 
     backgroundColor: (backgroundColor === "" ) ? `rgba(${x}, ${backgroundColorOpacity})` : (backgroundColor == false ) ? "" : backgroundColor,
-    color: (fontColorSetting === "") ? `rgba(${x}, ${fontColorOpacity})` : (fontColorSetting === false) ? "" : fontColorSetting,
+    // color: (fontColorSetting === "") ? `rgba(${x}, ${fontColorOpacity})` : (fontColorSetting === false) ? "" : fontColorSetting,
+    color: (fontColorSetting !== "") ? (fontColorSetting === false) ? "" : fontColorSetting : `rgba(${x}, ${fontColorOpacity})` ,
     overviewRulerColor: (fontColorSetting === "") ? `rgba(${x}, 0.8)` : fontColorSetting,
     rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed,
     textDecoration: textDecorationSetting,
