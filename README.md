@@ -23,9 +23,11 @@ This extension contributes the following settings:
 
 * `markdown-header-coloring.textDecoration`: (default: empty)
 
+
   Setting to decorate character string of markdown header.
 
   **Example 1:**
+  
 
   Set the font size to 1.5em and drop shadows.
 
@@ -75,7 +77,6 @@ This extension contributes the following settings:
       "markdown-header-coloring.fontColorOpacity": 1.0,
   ```
 
-
 * `markdown-header-coloring.backgroundColor`: (default: empty)
 
   Set the background color of Markdown header line.
@@ -83,7 +84,7 @@ This extension contributes the following settings:
   **Example:**
 
     ```json
-    "markdown-rainbow-header.backgroundColor": "background: #43c6ac; /* fallback for old browsers */ background: -webkit-linear-gradient(to left, #43c6ac, #191654); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to left, #43c6ac, #191654); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */"
+    "markdown-header-coloring.backgroundColor": "background: #43c6ac; /* fallback for old browsers */ background: -webkit-linear-gradient(to left, #43c6ac, #191654); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to left, #43c6ac, #191654); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */"
     
     ```
 
@@ -119,6 +120,8 @@ This extension contributes the following settings:
 
   Example combining `markdown-header-coloring.textDecoration` and `markdown-header-coloring.backgroundColor`.
 
+* Example 1:
+
   Add the following to settings.json and execute `Reload Window` commmand:
     
   ```json
@@ -132,6 +135,13 @@ This extension contributes the following settings:
   ![](https://raw.githubusercontent.com/satokaz/vscode-markdown-header-coloring/assets/images/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88%202018-07-04%200.42.05.png)
 
   
+* Example 2:
+
+  ```json
+  "markdown-header-coloring.backgroundColor": "background: rgba(67, 198, 172, 0.6); /* fallback for old browsers */ background: -webkit-linear-gradient(to left, rgba(67, 198, 172, 0.6), rgba(25, 22, 84, 0.6)); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to left, rgba(67, 198, 172, 0.3), rgba(25, 22, 84, 0.6)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */",
+  "markdown-header-coloring.textDecoration": "position: absolute, padding: 1px; font-size: 1.5em;text-transform: none;background: linear-gradient(to right, #6FB1FC 0%, #0052D4 100%) 0% center / 200% auto;background-clip: text;-webkit-background-clip: text;text-fill-color: transparent;-webkit-text-fill-color: transparent;",
+  ```
+
   Please make use of CSS and make your own coloring
 
 ## Known Issues

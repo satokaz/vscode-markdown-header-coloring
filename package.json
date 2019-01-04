@@ -21,6 +21,23 @@
     ],
     "main": "./out/extension",
     "contributes": {
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "satokaz-container",
+                    "title": "satokaz",
+                    "icon": "/images/Sun_Microsystems_logo.svg"
+                }
+            ]
+        },
+        "views": {
+            "satokaz-container": [
+                {
+                    "id": "outline",
+                    "name": "outline"
+                }
+            ]
+        },
         "configuration": {
             "title": "Markdown Header Coloring",
             "properties": {
@@ -41,7 +58,7 @@
                 },
                 "markdown-header-coloring.fontColorOpacity": {
                     "type": "number",
-                    "default": 1.0
+                    "default": 1
                 },
                 "markdown-header-coloring.backgroundColor": {
                     "type": [
@@ -53,6 +70,10 @@
                 "markdown-header-coloring.backgroundColorOpacity": {
                     "type": "number",
                     "default": 0.1
+                },
+                "markdown-header-coloring.overviewRulerColor": {
+                    "type": "string",
+                    "default": ""
                 }
             }
         }
@@ -68,7 +89,7 @@
         "@types/mocha": "^2.2.42",
         "@types/node": "^7.0.43",
         "typescript": "^2.6.1",
-        "vscode": "^1.1.18"
+        "vscode": "^1.1.26"
     },
     "dependencies": {}
 }
