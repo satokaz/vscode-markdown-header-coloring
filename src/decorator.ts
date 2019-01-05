@@ -109,8 +109,8 @@ export function decorate() {
     });
 
     rainbowsLine.forEach((a, i) => {
-        console.log(a);
-        console.log(i);
+        console.log('a =', a);
+        console.log('i =', i);
     });
 
     decorators.forEach(async (d, index) => {

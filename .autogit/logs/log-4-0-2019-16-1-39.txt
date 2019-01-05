@@ -1,0 +1,16 @@
+-------------------- Auto-Git Log --------------------
+		Fri Jan 04 2019 16:01:39 GMT+0900 (JST)
+------------------------------------------------------
+
+Modified files:
+* src/decorator.ts
+
+
+Created files:
+* .autogit/logs/log-4-0-2019-15-31-28.txt
+
+
+Deleted files:
+
+
+Renamed files:

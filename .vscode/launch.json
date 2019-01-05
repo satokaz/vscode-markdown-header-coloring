@@ -9,7 +9,7 @@
             "name": "Extension",
             "type": "extensionHost",
             "request": "launch",
-            "sourceMaps": false,
+            "sourceMaps": true,
             "runtimeExecutable": "${execPath}",
             "args": [
                 "--extensionDevelopmentPath=${workspaceFolder}"
