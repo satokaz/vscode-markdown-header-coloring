@@ -1,0 +1,17 @@
+-------------------- Auto-Git Log --------------------
+		Sat Jan 05 2019 11:26:01 GMT+0900 (JST)
+------------------------------------------------------
+
+Modified files:
+* .vscode/launch.json
+* src/decorator.ts
+
+
+Created files:
+* .autogit/logs/log-4-0-2019-16-1-39.txt
+
+
+Deleted files:
+
+
+Renamed files:
