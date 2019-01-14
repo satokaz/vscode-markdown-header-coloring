@@ -2,7 +2,7 @@
     "name": "vscode-markdown-header-coloring",
     "displayName": "Markdown Header Coloring",
     "description": "This extension decorates the Markdown header on the editor",
-    "version": "0.0.5",
+    "version": "0.1.0",
     "publisher": "satokaz",
     "homepage": "https://github.com/satokaz/vscode-markdown-header-coloring",
     "icon": "images/icon.png",
@@ -11,7 +11,7 @@
         "url": "https://github.com/satokaz/vscode-markdown-header-coloring"
     },
     "engines": {
-        "vscode": "^1.24.0"
+        "vscode": "^1.30.0"
     },
     "categories": [
         "Other"
@@ -26,11 +26,16 @@
             "properties": {
                 "markdown-header-coloring.destroyMode": {
                     "type": "boolean",
-                    "default": false
+                    "enum": [
+                        true,
+                        false
+                    ],
+                    "default": false,
+                    "description": ""
                 },
                 "markdown-header-coloring.textDecoration": {
                     "type": "string",
-                    "default": ""
+                    "default": "font-size: 1.0em; text-shadow: 2px 2px 3px rgba(0,0,0,0.5)"
                 },
                 "markdown-header-coloring.fontColor": {
                     "type": [
@@ -41,7 +46,7 @@
                 },
                 "markdown-header-coloring.fontColorOpacity": {
                     "type": "number",
-                    "default": 1.0
+                    "default": 1
                 },
                 "markdown-header-coloring.backgroundColor": {
                     "type": [
@@ -53,6 +58,254 @@
                 "markdown-header-coloring.backgroundColorOpacity": {
                     "type": "number",
                     "default": 0.1
+                },
+                "markdown-header-coloring.overviewRulerColor": {
+                    "type": "number",
+                    "default": ""
+                },
+                "markdown-header-coloring.userDefinedHeaderColor": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "enum": [
+                                true,
+                                false
+                            ],
+                            "default": false,
+                            "description": "Enable user-defined header coloring (default: false)"
+                        },
+                        "Header_1": {
+                            "type": "object",
+                            "properties": {
+                                "color": {
+                                    "type": "string",
+                                    "default": ""
+                                },
+                                "backgroundColor": {
+                                    "type": "string",
+                                    "default": ""
+                                },
+                                "textDecoration": {
+                                    "type": "string",
+                                    "default": ""
+                                },
+                                "overviewRulerColor": {
+                                    "type": "string",
+                                    "default": ""
+                                }
+                            }
+                        },
+                        "Header_2": {
+                            "type": "object",
+                            "properties": {
+                                "color": {
+                                    "type": "string",
+                                    "default": ""
+                                },
+                                "backgroundColor": {
+                                    "type": "string",
+                                    "default": ""
+                                },
+                                "textDecoration": {
+                                    "type": "string",
+                                    "default": ""
+                                },
+                                "overviewRulerColor": {
+                                    "type": "string",
+                                    "default": ""
+                                }
+                            }
+                        },
+                        "Header_3": {
+                            "type": "object",
+                            "properties": {
+                                "color": {
+                                    "type": "string",
+                                    "default": ""
+                                },
+                                "backgroundColor": {
+                                    "type": "string",
+                                    "default": ""
+                                },
+                                "textDecoration": {
+                                    "type": "string",
+                                    "default": ""
+                                },
+                                "overviewRulerColor": {
+                                    "type": "string",
+                                    "default": ""
+                                }
+                            }
+                        },
+                        "Header_4": {
+                            "type": "object",
+                            "properties": {
+                                "color": {
+                                    "type": "string",
+                                    "default": ""
+                                },
+                                "backgroundColor": {
+                                    "type": "string",
+                                    "default": ""
+                                },
+                                "textDecoration": {
+                                    "type": "string",
+                                    "default": ""
+                                },
+                                "overviewRulerColor": {
+                                    "type": "string",
+                                    "default": ""
+                                }
+                            }
+                        },
+                        "Header_5": {
+                            "type": "object",
+                            "properties": {
+                                "color": {
+                                    "type": "string",
+                                    "default": ""
+                                },
+                                "backgroundColor": {
+                                    "type": "string",
+                                    "default": ""
+                                },
+                                "textDecoration": {
+                                    "type": "string",
+                                    "default": ""
+                                },
+                                "overviewRulerColor": {
+                                    "type": "string",
+                                    "default": ""
+                                }
+                            }
+                        },
+                        "Header_6": {
+                            "type": "object",
+                            "properties": {
+                                "color": {
+                                    "type": "string",
+                                    "default": ""
+                                },
+                                "backgroundColor": {
+                                    "type": "string",
+                                    "default": ""
+                                },
+                                "textDecoration": {
+                                    "type": "string",
+                                    "default": ""
+                                },
+                                "overviewRulerColor": {
+                                    "type": "string",
+                                    "default": ""
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "enabled": false,
+                        "Header_1": {
+                            "color": "",
+                            "backgroundColor": "",
+                            "textDecoration": "",
+                            "overviewRulerColor": ""
+                        },
+                        "Header_2": {
+                            "color": "",
+                            "backgroundColor": "",
+                            "textDecoration": "",
+                            "overviewRulerColor": ""
+                        },
+                        "Header_3": {
+                            "color": "",
+                            "backgroundColor": "",
+                            "textDecoration": "",
+                            "overviewRulerColor": ""
+                        },
+                        "Header_4": {
+                            "color": "",
+                            "backgroundColor": "",
+                            "textDecoration": "",
+                            "overviewRulerColor": ""
+                        },
+                        "Header_5": {
+                            "color": "",
+                            "backgroundColor": "",
+                            "textDecoration": "",
+                            "overviewRulerColor": ""
+                        },
+                        "Header_6": {
+                            "color": "",
+                            "backgroundColor": "",
+                            "textDecoration": "",
+                            "overviewRulerColor": ""
+                        }
+                    }
+                },
+                "markdown-header-coloring.colormapConfig": {
+                    "type": "object",
+                    "properties": {
+                        "colormap": {
+                            "type": "string",
+                            "description": "Color map name from the image above or a custom color scale",
+                            "enum": [
+                                "jet",
+                                "hsv",
+                                "hot",
+                                "cool",
+                                "spring",
+                                "summer",
+                                "autumn",
+                                "winter",
+                                "bone",
+                                "copper",
+                                "greys",
+                                "yignbu",
+                                "greens",
+                                "yiorrd",
+                                "bluered",
+                                "rdbu",
+                                "picnic",
+                                "rainbow",
+                                "portland",
+                                "blackbody",
+                                "earth",
+                                "electric",
+                                "alpha",
+                                "viridis",
+                                "inferno",
+                                "magma",
+                                "plasma",
+                                "warm",
+                                "cool",
+                                "rainbow-soft",
+                                "bathymetry",
+                                "cdom",
+                                "chlorophyll",
+                                "density",
+                                "freesurface-blue",
+                                "freesurface-red",
+                                "oxygen",
+                                "par",
+                                "phase",
+                                "salinity",
+                                "temperature",
+                                "turbidity",
+                                "velocity-blue",
+                                "velocity-green",
+                                "cubehelix"
+                            ]
+                        },
+                        "nshades": {
+                            "type": "number",
+                            "default": 20,
+                            "description": "Number of colors in returned array"
+                        }
+                    },
+                    "default": {
+                        "colormap": "hsv",
+                        "nshades": 20
+                    }
                 }
             }
         }
@@ -68,7 +321,9 @@
         "@types/mocha": "^2.2.42",
         "@types/node": "^7.0.43",
         "typescript": "^2.6.1",
-        "vscode": "^1.1.18"
+        "vscode": "^1.1.26"
     },
-    "dependencies": {}
+    "dependencies": {
+        "colormap": "^2.3.0"
+    }
 }
