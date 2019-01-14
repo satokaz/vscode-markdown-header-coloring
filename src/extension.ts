@@ -1,36 +1,46 @@
 import * as vscode from 'vscode'
-import { decorate } from './decorator';
+import { decorate, userDecorate } from './decorator';
+import { userDefinedHeaderProperties } from "./userDefinedHeaderProperties";
 
 export function activate(context: vscode.ExtensionContext) {
     console.log('Congratulations, your extension "vscode-ramarkdown-header-coloring" is now active!');
 
+    // let userDefinedHeaderColor;
+    // let userDefinedHeaderColor: Boolean = vscode.workspace.getConfiguration('markdown-header-coloring').get<Boolean>('userDefinedHeaderColor');
+    let userDefinedHeaderColor: userDefinedHeaderProperties = vscode.workspace.getConfiguration('markdown-header-coloring').get<object>('userDefinedHeaderColor');
+
+
     vscode.window.onDidChangeVisibleTextEditors(e => {
         if (vscode.window.activeTextEditor.document.languageId == 'markdown') {
-            decorate();
+            (userDefinedHeaderColor.enabled === false) ? decorate() : userDecorate();
+            // userDecorate();
         }
     })
 
     vscode.workspace.onDidChangeTextDocument(e => {
         if (vscode.window.activeTextEditor.document.languageId == 'markdown') {
-            decorate();
+            (userDefinedHeaderColor.enabled === false) ? decorate() : userDecorate();
+            // userDecorate();
         }
     })
 
     vscode.workspace.onDidChangeConfiguration(e => {
         if (vscode.window.activeTextEditor.document.languageId == 'markdown') {
-            decorate();
+            (userDefinedHeaderColor.enabled === false) ? decorate() : userDecorate();
+            // userDecorate();
         }
     })
 
     vscode.window.onDidChangeTextEditorViewColumn(e => {
         if (vscode.window.activeTextEditor.document.languageId == 'markdown') {
-            decorate();
+            (userDefinedHeaderColor.enabled === false) ? decorate() : userDecorate();
+            // userDecorate();
         }
     })
 
-    if (vscode.window.activeTextEditor.document.languageId == 'markdown') {
-        decorate();
-    }
+    // if (vscode.window.activeTextEditor.document.languageId == 'markdown') {
+    //     decorate();
+    // }
 }
 
-export function deactivate() { }
+export function deactivate() {}

@@ -1,86 +1,159 @@
 import * as vscode from "vscode"
+import * as colormap from "colormap";
+import { userDefinedHeaderProperties, userDefinedColormapProperties } from "./userDefinedHeaderProperties";
 
 let textDecorationSetting = vscode.workspace.getConfiguration('markdown-header-coloring').get<string>('textDecoration');
 let fontColorSetting = vscode.workspace.getConfiguration('markdown-header-coloring').get<string | boolean>('fontColor');
 let fontColorOpacity = vscode.workspace.getConfiguration('markdown-header-coloring').get<number>('fontColorOpacity');
 let backgroundColor = vscode.workspace.getConfiguration('markdown-header-coloring').get<string | boolean>('backgroundColor');
 let backgroundColorOpacity = vscode.workspace.getConfiguration('markdown-header-coloring').get<number>('backgroundColorOpacity');
-let overviewRulerColor = vscode.workspace.getConfiguration('markdown-header-coloring').get<number>('overviewRulerColor');
-let afterTextDecoration = vscode.workspace.getConfiguration('markdown-header-coloring').get<number>('afterTextDecoration');
-let beforeTextDecoration = vscode.workspace.getConfiguration('markdown-header-coloring').get<number>('beforeTextDecoration');
+let overviewRulerColor = vscode.workspace.getConfiguration('markdown-header-coloring').get<string>('overviewRulerColor');
+let afterTextDecoration = vscode.workspace.getConfiguration('markdown-header-coloring').get<string>('afterTextDecoration');
+let beforeTextDecoration = vscode.workspace.getConfiguration('markdown-header-coloring').get<string>('beforeTextDecoration');
+let userDefinedColormap: userDefinedColormapProperties = vscode.workspace.getConfiguration('markdown-header-coloring').get<object>('colormapConfig');
 
-let colors = [
-    "128,243,31",
-    "165,222,11",
-    "199,193,1",
-    "227,158,3",
-    "246,120,15",
-    "254,83,38",
-    "251,50,68",
-    "237,24,104",
-    "213,7,142",
-    "182,1,179",
-    "145,6,211",
-    "107,22,236",
-    "71,47,250",
-    "40,80,254",
-    "17,117,247",
-    "3,155,229",
-    "1,190,202",
-    "10,220,168",
-    "29,242,131",
-    "58,253,93",
-    "92,253,58",
-    "130,242,30",
-    "167,221,10",
-    "201,191,1",
-    "228,156,3",
-    "247,118,16",
-    "254,81,39",
-    "251,48,70",
-    "236,22,106",
-    "212,6,144",
-    "180,1,181",
-    "143,6,213",
-    "105,23,237",
-    "69,49,251",
-    "39,82,254",
-    "16,119,246",
-    "3,157,228",
-    "1,192,200",
-    "11,222,166",
-    "31,243,129",
-    "59,253,91",
-    "94,253,57",
-    "132,241,29",
-    "169,219,10",
-    "203,189,1",
-    "230,154,4",
-    "247,116,17",
-    "254,79,41",
-    "250,46,72",
-    "235,21,109",
-];
+let colors: string[];
+let rainbowsLine = [];
 
-// console.log(`rgba(${colors[1]}, ${backgroundColorOpacity})`);
+// console.log(userDefinedColormap);
 
-let rainbowsLine = colors.map(x => vscode.window.createTextEditorDecorationType({
-    isWholeLine: true,
-    before: {
-        textDecoration: `${beforeTextDecoration}`
-    },
-    after: {
-        contentText: "",
-        textDecoration: `${afterTextDecoration}`
-    },
+// userDefinedHeaderColor
+let userDefinedHeaderColor: userDefinedHeaderProperties = vscode.workspace.getConfiguration('markdown-header-coloring').get<object>('userDefinedHeaderColor');
+// console.log(userDefinedHeaderColor);
 
-    backgroundColor: (backgroundColor === "" ) ? `rgba(${x}, ${backgroundColorOpacity})` : (backgroundColor == false ) ? "" : backgroundColor,
-    color: (fontColorSetting === "") ? `rgba(${x}, ${fontColorOpacity})` : (fontColorSetting === false) ? "" : fontColorSetting,
-    overviewRulerColor: (fontColorSetting === "") ? `rgba(${x}, 0.8)` : fontColorSetting,
-    rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed,
-    textDecoration: textDecorationSetting,
-}));
+if (userDefinedHeaderColor.enabled === true) {
+    colors = [
+        userDefinedHeaderColor.Header_1.color,
+        userDefinedHeaderColor.Header_2.color,
+        userDefinedHeaderColor.Header_3.color,
+        userDefinedHeaderColor.Header_4.color,
+        userDefinedHeaderColor.Header_5.color,
+        userDefinedHeaderColor.Header_6.color,
+    ];
 
+    for (let i = 1; i < Object.keys(userDefinedHeaderColor).length; i++) {
+        // console.log(`userDefinedHeaderColor.userDefinedHeader_${i}`);
+        // console.log('i =', i);
+        rainbowsLine.push(generateHeaderDecorations(colors[i -1], i)); 
+    }
+    // console.log('rainbowsLine =', rainbowsLine);
+
+} else {
+    colors = colormap({
+        colormap: userDefinedColormap.colormap,
+        nshades: userDefinedColormap.nshades,
+        format: 'rba',
+        alpha: 1
+    }).filter(v => {
+        return v.pop();
+    }); 
+
+    // colors = rainbowColors;
+    for (let i = 0; i < colors.length; i++) {
+        // console.log('i =', i);
+        rainbowsLine.push(generateDecorations(colors[i])); 
+    }
+}
+
+// console.log('colors =', colors);
+// console.log('userDefinedHeaderColor length =', Object.keys(userDefinedHeaderColor).length);
+
+function generateDecorations(x:string) {
+    // console.log('x =', x);
+    // console.log(`rgba(${x}, ${fontColorOpacity})`);
+    return vscode.window.createTextEditorDecorationType({
+        isWholeLine: true,
+        // before: {
+        //     contentText: "",
+        //     textDecoration: `${beforeTextDecoration}`
+        // },
+        // after: {
+        //     contentText: "",
+        //     textDecoration: `${afterTextDecoration}`
+        // },
+        color: (fontColorSetting !== "") ? (fontColorSetting === false) ? "" : fontColorSetting : `rgba(${x}, ${fontColorOpacity})`,
+        // color: (fontColorSetting === "") ? `rgba(${x}, ${fontColorOpacity})` : (fontColorSetting === false) ? "" : fontColorSetting,
+        backgroundColor: (backgroundColor === "" ) ? `rgba(${x}, ${backgroundColorOpacity})` : (backgroundColor == false ) ? "" : backgroundColor,
+        overviewRulerColor: (overviewRulerColor === "") ? `rgba(${x}, 0.8)` : overviewRulerColor,
+        rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed,
+        textDecoration: textDecorationSetting,
+    });
+}
+
+function generateHeaderDecorations(x:string, i:number) {
+    // console.log('in generateHeaderDecorations x =', x);
+    // console.log('in generateHeaderDecorations i =', i);
+
+    userDefinedHeaderColor = vscode.workspace.getConfiguration('markdown-header-coloring').get<object>('userDefinedHeaderColor');
+
+    // console.log(userDefinedHeaderColor);
+
+    return vscode.window.createTextEditorDecorationType({
+        isWholeLine: true,
+
+        color:
+        (i == 1) 
+        ? userDefinedHeaderColor.Header_1.color
+        : (i == 2) 
+        ? userDefinedHeaderColor.Header_2.color 
+        : (i == 3) 
+        ? userDefinedHeaderColor.Header_3.color 
+        : (i == 4) 
+        ? userDefinedHeaderColor.Header_4.color 
+        : (i == 5) 
+        ? userDefinedHeaderColor.Header_5.color
+        : (i == 6) 
+        ? userDefinedHeaderColor.Header_6.color 
+        : "",
+
+        backgroundColor: 
+        (i == 1) 
+        ? userDefinedHeaderColor.Header_1.backgroundColor 
+        : (i == 2) 
+        ? userDefinedHeaderColor.Header_2.backgroundColor 
+        : (i == 3) 
+        ? userDefinedHeaderColor.Header_3.backgroundColor 
+        : (i == 4) 
+        ? userDefinedHeaderColor.Header_4.backgroundColor 
+        : (i == 5) 
+        ? userDefinedHeaderColor.Header_5.backgroundColor
+        : (i == 6) 
+        ? userDefinedHeaderColor.Header_6.backgroundColor 
+        : "",
+        
+        textDecoration: 
+        (i == 1) 
+        ? userDefinedHeaderColor.Header_1.textDecoration 
+        : (i == 2) 
+        ? userDefinedHeaderColor.Header_2.textDecoration 
+        : (i == 3) 
+        ? userDefinedHeaderColor.Header_3.textDecoration 
+        : (i == 4) 
+        ? userDefinedHeaderColor.Header_4.textDecoration 
+        : (i == 5) 
+        ? userDefinedHeaderColor.Header_5.textDecoration
+        : (i == 6) 
+        ? userDefinedHeaderColor.Header_6.textDecoration 
+        : "",
+
+        overviewRulerColor: 
+        (i == 1) 
+        ? (userDefinedHeaderColor.Header_1.overviewRulerColor == "") ? userDefinedHeaderColor.Header_1.color : userDefinedHeaderColor.Header_1.overviewRulerColor
+        : (i == 2) 
+        ? (userDefinedHeaderColor.Header_2.overviewRulerColor == "") ? userDefinedHeaderColor.Header_2.color : userDefinedHeaderColor.Header_2.overviewRulerColor
+        : (i == 3) 
+        ? (userDefinedHeaderColor.Header_3.overviewRulerColor == "") ? userDefinedHeaderColor.Header_3.color : userDefinedHeaderColor.Header_3.overviewRulerColor
+        : (i == 4) 
+        ? (userDefinedHeaderColor.Header_4.overviewRulerColor == "") ? userDefinedHeaderColor.Header_4.color : userDefinedHeaderColor.Header_4.overviewRulerColor
+        : (i == 5) 
+        ? (userDefinedHeaderColor.Header_5.overviewRulerColor == "") ? userDefinedHeaderColor.Header_5.color : userDefinedHeaderColor.Header_5.overviewRulerColor
+        : (i == 6) 
+        ? (userDefinedHeaderColor.Header_6.overviewRulerColor == "") ? userDefinedHeaderColor.Header_6.color : userDefinedHeaderColor.Header_6.overviewRulerColor
+        : "", 
+        
+        rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed,
+    });
+}
 
 function getRandomInt(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -88,10 +161,12 @@ function getRandomInt(min: number, max: number): number {
 
 export function decorate() {
 
-    let editor = vscode.window.activeTextEditor;
-
-    if(!editor) {
+    let editor: vscode.TextEditor;
+ 
+    if (!vscode.window.activeTextEditor) {
         return;
+    } else {
+        editor = vscode.window.activeTextEditor;
     }
 
     let text = editor.document.getText();
@@ -104,37 +179,100 @@ export function decorate() {
     if (vscode.workspace.getConfiguration('markdown-header-coloring').get<boolean>('destroyMode')) {
         offset = getRandomInt(0, colors.length);
     } else { 
-        // offset = 1;
-        offset = colors.length;
+        offset = 0;
+        // offset = colors.length;
     }
 
     while ((match = regex.exec(text))) {
         let lines: string[] = [...(match[1] || match[2])];
 
+        // console.log('match の中身 =', JSON.stringify(lines));
+        // console.log('match.length =', match.length);
+
         if (backgroundColor === "") {
-            offset--;
-            lines.forEach((_, index) => {
+            for (let index = 0; index < lines.length; index++) {
+                // console.log('value =', lines[index]);
+                // console.log('value length =', lines[index].length);
+                // console.log('index =', index);
+                // console.log('lines length =', lines.length);
                 let matchIndex = match.index + 1;
                 let rainbowIndex =  Math.abs((index + offset) % colors.length);
                 let startIndex = matchIndex;
                 let start = editor.document.positionAt(startIndex);
                 let end = start;
+                // console.log('rainbowIndex =', rainbowIndex);
                 decorators[rainbowIndex].push(new vscode.Range(start, end));
-            });
+                break;
+            }
         } else {
-            lines.forEach((_, index) => {
+            for (let index = 0; index < lines.length; index++) {
                 let matchIndex = match.index + 1;
                 let startIndex = matchIndex;
                 let start = editor.document.positionAt(startIndex);
                 let end = start;
                 decorators[index].push(new vscode.Range(start, end));
-            });
+                break;
+            }
+        }
+        offset++;
+    }
+
+    rainbowsLine.forEach((v, index) => {
+        rainbowsLine[index].dispose;
+    });
+
+    // decorators.forEach((a, i) => {
+    //     console.log(`decorators[${i}] =`, JSON.stringify(a).toString());
+    // });
+
+    decorators.forEach(async (d, index) => {
+        editor.setDecorations(rainbowsLine[index], d);
+    })
+}
+
+export function userDecorate() {
+    // console.log('call userDecorate()')
+    let editor: vscode.TextEditor;
+
+    if (!vscode.window.activeTextEditor) {
+        return;
+    } else {
+        editor = vscode.window.activeTextEditor;
+    }
+
+    let text = editor.document.getText();
+    let regex = /(^#{1,}\s)/gm;
+    let decorators = colors.map(x => []); // colors に定義された色の数だけ配列を作る
+    let match: RegExpMatchArray;
+
+    while ((match = regex.exec(text))) {
+        let lines: string[] = [...(match[1] || match[2])];
+
+        // console.log('match の中身 =', JSON.stringify(lines));
+        // console.log('match.length =', match.length);
+
+        // 1 回 push されるだけで良いので、push されたら break で loop を抜けるために foreach ではなく for を使う
+        for (let i = 0; i < lines.length; i++) {
+            // console.log('value =', lines[i]);
+            // console.log('value length =', lines[i].length);
+            // console.log('index =', i);
+            // console.log('lines length =', lines.length);
+            let matchIndex = match.index + 1;
+            let startIndex = matchIndex;
+            let start = editor.document.positionAt(startIndex);
+            let end = start;
+            decorators[lines.length - 2].push(new vscode.Range(start, end));
+            break;
         }
     }
 
     rainbowsLine.forEach((v, index) => {
         rainbowsLine[index].dispose;
     });
+
+    // decorators.forEach((a, i) => {
+    //     console.log(`decorators[${i}] =`, JSON.stringify(a).toString());
+    // });
 
     decorators.forEach(async (d, index) => {
         editor.setDecorations(rainbowsLine[index], d);
