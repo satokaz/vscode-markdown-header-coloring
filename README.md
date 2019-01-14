@@ -21,7 +21,24 @@ Some settings use tricks to embed CSS.
 
 This extension contributes the following settings:
 
-* `markdown-header-coloring.textDecoration`: (default: empty)
+
+* **`"markdown-header-coloring.colormapConfig`**
+   - In the `"colormap"` setting, it is possible to select candidates for colormap.
+   - In the `"nshades"` setting, Specify the number of colors that make up the color map.
+
+   The default setting:   
+   ```jsonc
+   "markdown-header-coloring.colormapConfig": {
+      "colormap": "hsv",
+      "nshades": 20
+   },
+   ```
+
+
+
+
+
+* **`markdown-header-coloring.textDecoration`: (default: empty)**
 
   Setting to decorate character string of markdown header.
 
@@ -46,7 +63,7 @@ This extension contributes the following settings:
   ![](https://raw.githubusercontent.com/satokaz/vscode-markdown-header-coloring/assets/images/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88%202018-07-04%209.31.25.png)
 
 
-* `markdown-header-coloring.fontColor`: (default: empty)
+* **`markdown-header-coloring.fontColor`: (default: empty)**
 
   Set font color of Markdown header. If you do not like the default coloring, you can overwrite it with this setting.However, it is limited to one color.
   
@@ -64,7 +81,7 @@ This extension contributes the following settings:
     "markdown-header-coloring.fontColor": false
   ``` 
 
-* `markdown-header-coloring.fontColorOpacity`: (default: 1.0)
+* **`markdown-header-coloring.fontColorOpacity`: (default: 1.0)**
 
   Set opacity of font coloring.
   It has no effect on coloring set by `markdown-header-coloring.fontColor`.
@@ -72,18 +89,18 @@ This extension contributes the following settings:
   **Example:**
 
   ```json
-      "markdown-header-coloring.fontColorOpacity": 1.0,
+      "markdown-header-coloring.fontColorOpacity": 0.5
   ```
 
 
-* `markdown-header-coloring.backgroundColor`: (default: empty)
+* **`markdown-header-coloring.backgroundColor`: (default: empty)**
 
   Set the background color of Markdown header line.
   
   **Example:**
 
     ```json
-    "markdown-rainbow-header.backgroundColor": "background: #43c6ac; /* fallback for old browsers */ background: -webkit-linear-gradient(to left, #43c6ac, #191654); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to left, #43c6ac, #191654); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */"
+    "markdown-header-coloring.backgroundColor": "background: #43c6ac; /* fallback for old browsers */ background: -webkit-linear-gradient(to left, #43c6ac, #191654); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to left, #43c6ac, #191654); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */"
     
     ```
 
@@ -97,7 +114,7 @@ This extension contributes the following settings:
       "markdown-header-coloring.backgroundColor": false
   ```
 
-* `markdown-header-coloring.backgroundColorOpacity`: (default: 0.1)
+* **`markdown-header-coloring.backgroundColorOpacity`: (default: 0.1)**
 
   Set opacity of background coloring.
   It has no effect on coloring set by `markdown-header-coloring.backgroundColor`.
@@ -106,14 +123,13 @@ This extension contributes the following settings:
       "markdown-header-coloring.backgroundColorOpacity": 0.1
   ```
 
-* `markdown-header-coloring.destroyMode`: (default: false)
+* **`markdown-header-coloring.destroyMode`: (default: false)**
 
   Update coloring every time an event occurs. Specifically, it changes each time a single character is entered.
 
   Please be careful because it uses many CPU resources.
 
   ![](https://raw.githubusercontent.com/satokaz/vscode-markdown-header-coloring/assets/images/md_header_destroy.gif)
-
 
 ## Example
 
@@ -131,8 +147,148 @@ This extension contributes the following settings:
 
   ![](https://raw.githubusercontent.com/satokaz/vscode-markdown-header-coloring/assets/images/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88%202018-07-04%200.42.05.png)
 
-  
   Please make use of CSS and make your own coloring
+
+
+## User defined header coloring
+
+**With this setting, all the settings introduced earlier can not be used.**
+
+Added `markdown-header-coloring.userDefinedHeaderColor` setting that allows user-defined decoration.
+
+The default setting is `false`, and no decorations are defined.
+Headers 1 (#) through 6 (######) must be defined by users themselves.
+
+To enable decoration according to header level, set `enabled` to `true`.
+
+   The default setting: 
+   ```jsonc
+   "markdown-header-coloring.userDefinedHeaderColor": {
+      "enabled": false,
+      "Header_1": {
+         "color": "",
+         "backgroundColor": "",
+         "textDecoration": "",
+         "overviewRulerColor": ""
+      },
+      "Header_2": {
+         "color": "",
+         "backgroundColor": "",
+         "textDecoration": "",
+         "overviewRulerColor": ""
+      },
+      "Header_3": {
+         "color": "",
+         "backgroundColor": "",
+         "textDecoration": "",
+         "overviewRulerColor": ""
+      },
+      "Header_4": {
+         "color": "",
+         "backgroundColor": "",
+         "textDecoration": "",
+         "overviewRulerColor": ""
+      },
+      "Header_5": {
+         "color": "",
+         "backgroundColor": "",
+         "textDecoration": "",
+         "overviewRulerColor": ""
+      },
+      "Header_6": {
+         "color": "",
+         "backgroundColor": "",
+         "textDecoration": "",
+         "overviewRulerColor": ""
+      }
+   }
+   ```
+
+Example: User defined header 1
+
+![alt](https://github.com/satokaz/vscode-markdown-header-coloring/blob/assets/images/スクリーンショット%202019-01-14%2023.14.53.png?raw=true)
+
+```
+"markdown-header-coloring.userDefinedHeaderColor": {
+   "enabled": true,
+   "Header_1": {
+      "color": "",
+      "backgroundColor": "background: #9cecfb;background: -webkit-linear-gradient(to right, #9cecfb, #65c7f7, #0052d4);background: linear-gradient(to right, #9cecfb, #65c7f7, #0052d4);opacity: 0.5",
+      "textDecoration": "font-weight: 600; font-size: 1.8em;background: -webkit-linear-gradient(0deg, #FFFFFF, #6DD5FA, #2980B9);-webkit-background-clip: text;-webkit-text-fill-color: transparent;"
+   },
+   "Header_2": {
+      "color": "",
+      "backgroundColor": "background: #83a4d4;background: -webkit-linear-gradient(to right, #83a4d4, #b6fbff);background: linear-gradient(to right, #83a4d4, #b6fbff);opacity: 0.5",
+      "textDecoration": "font-weight: 600; font-size: 1.6em;background: -webkit-linear-gradient(0deg, #83a4d4, #83a4d4, #b6fbff);-webkit-background-clip: text;-webkit-text-fill-color: transparent;"
+   },
+   "Header_3": {
+      "color": "",
+      "backgroundColor": "background: #2bc0e4;background: -webkit-linear-gradient(to right, #2bc0e4, #eaecc6);background: linear-gradient(to right, #2bc0e4, #eaecc6);;opacity: 0.5",
+      "textDecoration": "font-weight: 600; font-size: 1.4em;background: -webkit-linear-gradient(0deg, #1FA2FF, #12D8FA, #A6FFCB);-webkit-background-clip: text;-webkit-text-fill-color: transparent;"
+   },
+   "Header_4": {
+      "color": "",
+      "backgroundColor": "background: #1fa2ff;background: -webkit-linear-gradient(to right, #1fa2ff, #12d8fa, #a6ffcb);background: linear-gradient(to right, #1fa2ff, #12d8fa, #a6ffcb);opacity: 0.5",
+      "textDecoration": "font-weight: 600; font-size: 1.4em;background: -webkit-linear-gradient(0deg, #77A1D3, #79CBCA, #A6FFCB);-webkit-background-clip: text;-webkit-text-fill-color: transparent;"
+   },
+   "Header_5": {
+      "color": "",
+      "backgroundColor": "background: #ff6e7f; background: -webkit-linear-gradient(to right, #bfe9ff, #ff6e7f); background: linear-gradient(to right, #bfe9ff, #ff6e7f);opacity: 0.5",
+      "textDecoration": "font-weight: 600; font-size: 1.2em;background: -webkit-linear-gradient(0deg, #ff6e7f, #bfe9ff);-webkit-background-clip: text;-webkit-text-fill-color: transparent;"
+   },
+   "Header_6": {
+      "color": "",
+      "backgroundColor": "background: #9796f0; background: -webkit-linear-gradient(to right, #9796f0, #fbc7d4); background: linear-gradient(to right, #9796f0, #fbc7d4);opacity: 0.5",
+      "textDecoration": "font-weight: 600; font-size: 1.1em;background: -webkit-linear-gradient(0deg, #9796f0, #fbc7d4);-webkit-background-clip: text;-webkit-text-fill-color: transparent;"
+   }
+},
+```
+
+Example User defined header 2:
+
+Specify jpg accessible with https as background.
+http (not https) access is not allowed for security.
+
+Can also be local file.
+
+![alt](https://raw.githubusercontent.com/satokaz/vscode-markdown-header-coloring/assets/images/スクリーンショット%202019-01-14%2014.22.17.png)
+
+```jsonc
+"markdown-header-coloring.userDefinedHeaderColor": {
+   "enabled": true,
+   "Header_1": {
+      "color": "",
+      "backgroundColor": "color: white;background-image: url(https://images.pexels.com/photos/1382393/pexels-photo-1382393.jpeg?dl&fit=crop&crop=entropy&w=1920&h=1280);background-size: cover;background-position: 0% 20%;opacity: 0.2",
+      "textDecoration": "font-weight: 600; font-size: 1.8em;background: -webkit-linear-gradient(0deg, #FFFFFF, #6DD5FA, #2980B9);-webkit-background-clip: text;-webkit-text-fill-color: transparent;"
+   },
+   "Header_2": {
+      "color": "",
+      "backgroundColor": "color: white;background-image: url(https://images.pexels.com/photos/1382393/pexels-photo-1382393.jpeg?dl&fit=crop&crop=entropy&w=1920&h=1280);background-size: cover;background-position: 0% 40%;opacity: 0.2",
+      "textDecoration": "font-weight: 600; font-size: 1.8em;background: -webkit-linear-gradient(0deg, #FFFFFF, #6DD5FA, #2980B9);-webkit-background-clip: text;-webkit-text-fill-color: transparent;"
+   },
+   "Header_3": {
+      "color": "",
+      "backgroundColor": "color: white;background-image: url(https://images.pexels.com/photos/1382393/pexels-photo-1382393.jpeg?dl&fit=crop&crop=entropy&w=1920&h=1280);background-size: cover;background-position: 0% 50%;opacity: 0.2",
+      "textDecoration": "font-weight: 600; font-size: 1.8em;background: -webkit-linear-gradient(0deg, #FFFFFF, #6DD5FA, #2980B9);-webkit-background-clip: text;-webkit-text-fill-color: transparent;"
+   },
+   "Header_4": {
+      "color": "",
+      "backgroundColor": "color: white;background-image: url(https://images.pexels.com/photos/1382393/pexels-photo-1382393.jpeg?dl&fit=crop&crop=entropy&w=1920&h=1280);background-size: cover;background-position: 0% 70%;opacity: 0.2",
+      "textDecoration": "font-weight: 600; font-size: 1.8em;background: -webkit-linear-gradient(0deg, #FFFFFF, #6DD5FA, #2980B9);-webkit-background-clip: text;-webkit-text-fill-color: transparent;"
+   },
+   "Header_5": {
+      "color": "",
+      "backgroundColor": "color: white;background-image: url(https://images.pexels.com/photos/1382393/pexels-photo-1382393.jpeg?dl&fit=crop&crop=entropy&w=1920&h=1280);background-size: cover;background-position: 0% 80%;opacity: 0.2",
+      "textDecoration": "font-weight: 600; font-size: 1.8em;background: -webkit-linear-gradient(0deg, #FFFFFF, #6DD5FA, #2980B9);-webkit-background-clip: text;-webkit-text-fill-color: transparent;"
+   },
+   "Header_6": {
+      "color": "",
+      "backgroundColor": "color: white;background-image: url(https://images.pexels.com/photos/1382393/pexels-photo-1382393.jpeg?dl&fit=crop&crop=entropy&w=1920&h=1280);background-size: cover;background-position: 0% 90%;opacity: 0.2",
+      "textDecoration": "font-weight: 600; font-size: 1.8em;background: -webkit-linear-gradient(0deg, #FFFFFF, #6DD5FA, #2980B9);-webkit-background-clip: text;-webkit-text-fill-color: transparent;"
+   }
+},
+```
+
 
 ## Known Issues
 
