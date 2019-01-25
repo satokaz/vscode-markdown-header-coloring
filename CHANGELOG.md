@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.1.1
+
+* [Issue #7](https://github.com/satokaz/vscode-markdown-header-coloring/issues/7#issuecomment-456640884), Added workaround by CSS Injection.
+
 ## 0.1.0
 
 * Adopt [bpostlethwaite/colormap](https://github.com/bpostlethwaite/colormap). 
