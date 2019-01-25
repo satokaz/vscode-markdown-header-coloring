@@ -76,7 +76,7 @@ function generateDecorations(x:string) {
         backgroundColor: (backgroundColor === "" ) ? `rgba(${x}, ${backgroundColorOpacity})` : (backgroundColor == false ) ? "" : backgroundColor,
         overviewRulerColor: (overviewRulerColor === "") ? `rgba(${x}, 0.8)` : overviewRulerColor,
         rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed,
-        textDecoration: textDecorationSetting,
+        textDecoration: 'none;' + textDecorationSetting,
     });
 }
 
@@ -123,18 +123,18 @@ function generateHeaderDecorations(x:string, i:number) {
         
         textDecoration: 
         (i == 1) 
-        ? userDefinedHeaderColor.Header_1.textDecoration 
+        ? 'none;' + userDefinedHeaderColor.Header_1.textDecoration 
         : (i == 2) 
-        ? userDefinedHeaderColor.Header_2.textDecoration 
+        ? 'none;' + userDefinedHeaderColor.Header_2.textDecoration 
         : (i == 3) 
-        ? userDefinedHeaderColor.Header_3.textDecoration 
+        ? 'none;' + userDefinedHeaderColor.Header_3.textDecoration 
         : (i == 4) 
-        ? userDefinedHeaderColor.Header_4.textDecoration 
+        ? 'none;' + userDefinedHeaderColor.Header_4.textDecoration 
         : (i == 5) 
-        ? userDefinedHeaderColor.Header_5.textDecoration
+        ? 'none;' + userDefinedHeaderColor.Header_5.textDecoration
         : (i == 6) 
-        ? userDefinedHeaderColor.Header_6.textDecoration 
-        : "",
+        ? 'none;' + userDefinedHeaderColor.Header_6.textDecoration 
+        : 'none;' + "",
 
         overviewRulerColor: 
         (i == 1) 
