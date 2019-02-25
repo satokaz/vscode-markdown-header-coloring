@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.1.2
+
+* Explicitly activate in Markdown mode
+* [Issue #12](https://github.com/satokaz/vscode-markdown-header-coloring/issues/12), Remove update by onDidChangeVisibleTextEditors.
+
 ## 0.1.1
 
 * [Issue #7](https://github.com/satokaz/vscode-markdown-header-coloring/issues/7#issuecomment-456640884), Added workaround by CSS Injection.
