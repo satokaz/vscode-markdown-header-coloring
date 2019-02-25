@@ -17,7 +17,7 @@
         "Other"
     ],
     "activationEvents": [
-        "*"
+        "onLanguage:markdown"
     ],
     "main": "./out/extension",
     "contributes": {
