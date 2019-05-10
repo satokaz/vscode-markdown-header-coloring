@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.1.4
+
+* Fixed debug message suppression
+
 ## 0.1.3
 
 * Fix not to apply to '#' appearing in codeblock without indentation

@@ -176,21 +176,15 @@ export function decorate() {
         if (isCodeBlock === false) {
             if (v.match(/```.*/g)) {
                 isCodeBlock = true;
-                console.log('codeblock 始まり=', v);
-                console.log('count =', isCodeBlock);
             }
         } else {
             if(v.match(/^#{1,}.*/)) {
-                console.log('codeblock の中にある # =', v);
-                console.log('v.match(/^#{1,}.*/) =', String(v.match(/^#{1,}.*/)).length);
+                // console.log('v.match(/^#{1,}.*/) =', String(v.match(/^#{1,}.*/)).length);
                 v = v.replace(/^#/g, ' ');
-                console.log('replace した v =', v)
             }
 
             if (v.match(/```.*/g)) {
-                console.log('codeblock 終わり=', v);
                 isCodeBlock = false;
-                console.log('count =', isCodeBlock);
             }
         }
         return v;
@@ -291,7 +285,7 @@ export function userDecorate() {
 
             if (v.match(/```.*/g)) {
                 isCodeBlock = false;
-                console.log('count =', isCodeBlock);
+                // console.log('count =', isCodeBlock);
             }
         }
         return v;
