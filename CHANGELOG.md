@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.1.3
+
+* Fix not to apply to '#' appearing in codeblock without indentation
+
 ## 0.1.2
 
 * Explicitly activate in Markdown mode

@@ -1,6 +1,7 @@
 import * as vscode from "vscode"
 import * as colormap from "colormap";
 import { userDefinedHeaderProperties, userDefinedColormapProperties } from "./userDefinedHeaderProperties";
+import * as os from "os";
 
 let textDecorationSetting = vscode.workspace.getConfiguration('markdown-header-coloring').get<string>('textDecoration');
 let fontColorSetting = vscode.workspace.getConfiguration('markdown-header-coloring').get<string | boolean>('fontColor');
@@ -169,9 +170,36 @@ export function decorate() {
         editor = vscode.window.activeTextEditor;
     }
 
-    let text = editor.document.getText();
+    let isCodeBlock: boolean = false;
+    let text = editor.document.getText().split(os.EOL).map(v => {
+        
+        if (isCodeBlock === false) {
+            if (v.match(/```.*/g)) {
+                isCodeBlock = true;
+                console.log('codeblock 始まり=', v);
+                console.log('count =', isCodeBlock);
+            }
+        } else {
+            if(v.match(/^#{1,}.*/)) {
+                console.log('codeblock の中にある # =', v);
+                console.log('v.match(/^#{1,}.*/) =', String(v.match(/^#{1,}.*/)).length);
+                v = v.replace(/^#/g, ' ');
+                console.log('replace した v =', v)
+            }
 
-    let regex = /(^#{1,}\s)/gm;
+            if (v.match(/```.*/g)) {
+                console.log('codeblock 終わり=', v);
+                isCodeBlock = false;
+                console.log('count =', isCodeBlock);
+            }
+        }
+        return v;
+    }).join('\n');
+
+    // console.log("text =", text.split(os.EOL));
+    // console.log("test =", text);
+
+    let regex = /(^#{1,}\s.*)/gm;
     let decorators = colors.map(color => []);
     let match: RegExpMatchArray;
     let offset: number;
@@ -186,19 +214,25 @@ export function decorate() {
     while ((match = regex.exec(text))) {
         let lines: string[] = [...(match[1] || match[2])];
 
+        // console.log('match =', match);
+        // console.log('match.index =', match.index);
         // console.log('match の中身 =', JSON.stringify(lines));
         // console.log('match.length =', match.length);
+        // console.log('lines length =', lines.length);
 
         if (backgroundColor === "") {
             for (let index = 0; index < lines.length; index++) {
+                // console.log('value =', lines);
                 // console.log('value =', lines[index]);
                 // console.log('value length =', lines[index].length);
                 // console.log('index =', index);
                 // console.log('lines length =', lines.length);
+                // let matchIndex = match.index + 1;
                 let matchIndex = match.index + 1;
-                let rainbowIndex =  Math.abs((index + offset) % colors.length);
+                let rainbowIndex = Math.abs((index + offset) % colors.length);
                 let startIndex = matchIndex;
                 let start = editor.document.positionAt(startIndex);
+                // console.log('start =', start);
                 let end = start;
                 // console.log('rainbowIndex =', rainbowIndex);
                 decorators[rainbowIndex].push(new vscode.Range(start, end));
@@ -221,6 +255,7 @@ export function decorate() {
         rainbowsLine[index].dispose;
     });
 
+    // debug
     // decorators.forEach((a, i) => {
     //     console.log(`decorators[${i}] =`, JSON.stringify(a).toString());
     // });
@@ -240,7 +275,28 @@ export function userDecorate() {
         editor = vscode.window.activeTextEditor;
     }
 
-    let text = editor.document.getText();
+    let isCodeBlock: boolean = false;
+    let text = editor.document.getText().split(os.EOL).map(v => {
+        
+        if (isCodeBlock === false) {
+            if (v.match(/```.*/g)) {
+                isCodeBlock = true;
+                // console.log('start codeblock =', v);
+            }
+        } else {
+            if(v.match(/^#{1,}.*/)) {
+                // console.log('v.match(/^#{1,}.*/) =', String(v.match(/^#{1,}.*/)).length);
+                v = v.replace(/^#/g, ' ');
+            }
+
+            if (v.match(/```.*/g)) {
+                isCodeBlock = false;
+                console.log('count =', isCodeBlock);
+            }
+        }
+        return v;
+    }).join('\n');
+
     let regex = /(^#{1,}\s)/gm;
     let decorators = colors.map(x => []); // colors に定義された色の数だけ配列を作る
     let match: RegExpMatchArray;
