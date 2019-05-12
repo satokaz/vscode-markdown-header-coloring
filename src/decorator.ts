@@ -109,18 +109,18 @@ function generateHeaderDecorations(x:string, i:number) {
 
         backgroundColor: 
         (i == 1) 
-        ? userDefinedHeaderColor.Header_1.backgroundColor 
+        ? 'none;' + userDefinedHeaderColor.Header_1.backgroundColor 
         : (i == 2) 
-        ? userDefinedHeaderColor.Header_2.backgroundColor 
+        ? 'none;' + userDefinedHeaderColor.Header_2.backgroundColor 
         : (i == 3) 
-        ? userDefinedHeaderColor.Header_3.backgroundColor 
+        ? 'none;' + userDefinedHeaderColor.Header_3.backgroundColor 
         : (i == 4) 
-        ? userDefinedHeaderColor.Header_4.backgroundColor 
+        ? 'none;' + userDefinedHeaderColor.Header_4.backgroundColor 
         : (i == 5) 
-        ? userDefinedHeaderColor.Header_5.backgroundColor
+        ? 'none;' + userDefinedHeaderColor.Header_5.backgroundColor
         : (i == 6) 
-        ? userDefinedHeaderColor.Header_6.backgroundColor 
-        : "",
+        ? 'none;' + userDefinedHeaderColor.Header_6.backgroundColor 
+        : 'none;' + "",
         
         textDecoration: 
         (i == 1) 
