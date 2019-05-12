@@ -1,5 +1,10 @@
 # Change Log
 
+
+## 0.1.6
+
+* Revert: Fix not to apply to '#' appearing in YAML
+
 ## 0.1.5
 
 * Adopt webpack
