@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.1.5
+
+* Adopt webpack
+* Add CSS Injection to "backgroundColor"
+* Fix not to apply to '#' appearing in YAML
+
 ## 0.1.4
 
 * Fixed debug message suppression
