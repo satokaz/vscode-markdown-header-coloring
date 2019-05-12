@@ -289,6 +289,18 @@ Can also be local file.
 },
 ```
 
+## Tips
+
+Example of using a local image file:
+
+**macOS/Linux**
+```
+"backgroundColor": "background-image: url(/Users/kazus/Pictures/07_est.jpg);opacity: 0.2;"
+```
+**Windows** 
+```
+"backgroundColor": "background-image: url(file:///c:/Users/kazus/Desktop/test.jpg);opacity: 0.2;"
+```
 
 ## Known Issues
 
