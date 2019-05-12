@@ -293,11 +293,34 @@ export function userDecorate() {
 function codeblockParse(text) {
 
     let isCodeBlock: boolean = false;
+    // let isYamlHeader: boolean = false;
+    // let isYamlHeaderEnd: boolean = false;
+    
     return text.split(os.EOL).map(v => {
         
+        // yaml header
+        // if(isYamlHeaderEnd === false) {
+        //     if (isYamlHeader === false) {
+        //         if (v.match(/(^---$)/g)) {
+        //             console.log("YAML");
+        //             isYamlHeader = true;
+        //         }
+        //     } else {
+        //         if(v.match(/^#{1,}.*/)) {
+        //             // console.log('v.match(/^#{1,}.*/) =', String(v.match(/^#{1,}.*/)).length);
+        //             v = v.replace(/^#/g, ' ');
+        //         }
+        //         if (v.match(/(^---$)/g)) {
+        //             isYamlHeader = false;
+        //             isYamlHeaderEnd = true;
+        //             console.log("YAML End");
+        //         }
+        //     }
+        // }
+
         // CodeBlock
         if (isCodeBlock === false) {
-            if (v.match(/(```.*)|(---)/g)) {
+            if (v.match(/(```.*)/g)) {
                 isCodeBlock = true;
             }
         } else {
@@ -306,7 +329,7 @@ function codeblockParse(text) {
                 v = v.replace(/^#/g, ' ');
             }
 
-            if (v.match(/(```.*)|(---)/g)) {
+            if (v.match(/(```.*)/g)) {
                 isCodeBlock = false;
             }
         }
