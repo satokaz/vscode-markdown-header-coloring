@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.1.7
+
+* Fix misuse of os.EOL. (Wrong display in Windows environment)
+* The occurrence of codeblock tag checks only the beginning of the line.
 
 ## 0.1.6
 

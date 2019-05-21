@@ -172,7 +172,7 @@ export function decorate() {
 
 
     let text = codeblockParse(editor.document.getText());
-    console.log("text =", text.split(os.EOL));
+    console.log("text =", text.split('\n'));
     console.log("test =", text);
 
     let regex = /(^#{1,}\s.*)/gm;
@@ -296,7 +296,7 @@ function codeblockParse(text) {
     // let isYamlHeader: boolean = false;
     // let isYamlHeaderEnd: boolean = false;
     
-    return text.split(os.EOL).map(v => {
+    return text.split('\n').map(v => {
         
         // yaml header
         // if(isYamlHeaderEnd === false) {
@@ -320,7 +320,7 @@ function codeblockParse(text) {
 
         // CodeBlock
         if (isCodeBlock === false) {
-            if (v.match(/(```.*)/g)) {
+            if (v.match(/(^```.*)/g)) {
                 isCodeBlock = true;
             }
         } else {
@@ -329,7 +329,7 @@ function codeblockParse(text) {
                 v = v.replace(/^#/g, ' ');
             }
 
-            if (v.match(/(```.*)/g)) {
+            if (v.match(/(^```.*)/g)) {
                 isCodeBlock = false;
             }
         }
