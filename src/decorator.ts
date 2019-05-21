@@ -320,7 +320,7 @@ function codeblockParse(text) {
 
         // CodeBlock
         if (isCodeBlock === false) {
-            if (v.match(/(```.*)/g)) {
+            if (v.match(/(^```.*)/g)) {
                 isCodeBlock = true;
             }
         } else {
@@ -329,7 +329,7 @@ function codeblockParse(text) {
                 v = v.replace(/^#/g, ' ');
             }
 
-            if (v.match(/(```.*)/g)) {
+            if (v.match(/(^```.*)/g)) {
                 isCodeBlock = false;
             }
         }
