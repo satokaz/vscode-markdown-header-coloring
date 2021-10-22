@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.1.8
+
+* Add support for running in web environments
+
 ## 0.1.7
 
 * Fix misuse of os.EOL. (Wrong display in Windows environment)
