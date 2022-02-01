@@ -1,5 +1,8 @@
 # Change Log
 
+## 0.1.9
+
+* Ignore YAML front matter comments: issue#30
 ## 0.1.8
 
 * Add support for running in web environments
