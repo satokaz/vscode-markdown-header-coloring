@@ -293,8 +293,8 @@ export function userDecorate() {
 function codeblockParse(text) {
 
     let isCodeBlock: boolean = false;
-    // let isYamlHeader: boolean = false;
-    // let isYamlHeaderEnd: boolean = false;
+    let isFrontMatter: boolean = false;
+    let isFrontMatterEnd: boolean = false;
     
     return text.split('\n').map(v => {
         
@@ -317,6 +317,25 @@ function codeblockParse(text) {
         //         }
         //     }
         // }
+
+        // yaml front matter
+        if(isFrontMatterEnd === false) {
+            if (isFrontMatter === false) {
+                if (v.match(/(^---.*)/g)) {
+                    isFrontMatter = true;
+                }
+            } else {
+                if(v.match(/^#{1,}.*/)) {
+                    // console.log('v.match(/^#{1,}.*/) =', String(v.match(/^#{1,}.*/)).length);
+                    v = v.replace(/^#/g, ' ');
+                }
+
+                if (v.match(/(^---.*)/g)) {
+                    isFrontMatter = false;
+                    isFrontMatterEnd = true;
+                }
+            }
+        }
 
         // CodeBlock
         if (isCodeBlock === false) {
