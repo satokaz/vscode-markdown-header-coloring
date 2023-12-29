@@ -43,7 +43,7 @@ if (userDefinedHeaderColor.enabled === true) {
     colors = colormap({
         colormap: userDefinedColormap.colormap,
         nshades: userDefinedColormap.nshades,
-        format: 'rba',
+        format: 'rgba',
         alpha: 1
     }).filter(v => {
         return v.pop();
