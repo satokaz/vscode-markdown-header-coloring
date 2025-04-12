@@ -12,7 +12,7 @@ By default, it will be colored according to the number of headers as shown in th
 
 ## Requirements
 
-* This extension only applies to markdown documents.
+* This extension only applies to markdown and Quarto documents.
 * No commands are provided.
 
 ## Extension Settings

@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.1.10
+
+* Add support for Quarto (`.qmd`) files.
+
 ## 0.1.9
 
 * Ignore YAML front matter comments: issue#30
