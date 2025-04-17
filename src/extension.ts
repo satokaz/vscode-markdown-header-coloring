@@ -11,7 +11,7 @@ function isLanguageEnabled(editor: vscode.TextEditor): boolean {
 // Main trigger function
 function triggerDecoration() {
     const editor = vscode.window.activeTextEditor;
-    if (!editor || !isMarkdownOrQuarto(editor)) { 
+    if (!editor || !isLanguageEnabled(editor)) { 
         return; 
     }
 
