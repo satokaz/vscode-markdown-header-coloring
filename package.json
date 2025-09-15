@@ -314,6 +314,11 @@
             "colormap": "hsv",
             "nshades": 20
           }
+        },
+        "markdown-header-coloring.enabledLanguages": {
+          "type": "array",
+          "default": ["markdown", "quarto"],
+          "description": "List of languages where the extension is enabled"
         }
       }
     }

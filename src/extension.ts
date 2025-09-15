@@ -4,7 +4,9 @@ import { userDefinedHeaderProperties } from './userDefinedHeaderProperties';
 
 // Helper to check for markdown or quarto
 function isLanguageEnabled(editor: vscode.TextEditor): boolean {
-    const enabledLanguages = vscode.workspace.getConfiguration('get<string[]>('markdown-header-coloring').get<string[]>('enabledLanguages')
+    const enabledLanguages = vscode.workspace.
+        getConfiguration('markdown-header-coloring')
+        .get<string[]>('enabledLanguages');
     return enabledLanguages.includes(editor.document.languageId);
 }
 

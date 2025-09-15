@@ -10,9 +10,11 @@ This extension provides the function of coloring the Markdown Header tag on the 
 
 By default, it will be colored according to the number of headers as shown in the screenshot above.
 
+Supported languages by default: `markdown`, `quarto` (Quarto .qmd). You can extend this via settings (see below).
+
 ## Requirements
 
-* This extension only applies to markdown-formatted documents, and is not guaranteed to work on other file formats.
+* This extension only applies to markdown-formatted documents, and is not guaranteed to work on other file formats. Quarto (`.qmd`) is supported by default.
 * No commands are provided.
 
 ## Extension Settings
@@ -20,6 +22,19 @@ By default, it will be colored according to the number of headers as shown in th
 Some settings use tricks to embed CSS.
 
 This extension contributes the following settings:
+
+* **`markdown-header-coloring.enabledLanguages`**
+   - Array of VS Code language IDs for which this extension is active.
+   - Default: `["markdown", "quarto"]`
+   - Example (enable for R Markdown as well):
+      ```jsonc
+      // settings.json
+      "markdown-header-coloring.enabledLanguages": [
+         "markdown",
+         "quarto",
+         "rmd"
+      ]
+      ```
 
 
 * **`"markdown-header-coloring.colormapConfig`**
@@ -33,8 +48,6 @@ This extension contributes the following settings:
       "nshades": 20
    },
    ```
-
-
 
 
 
