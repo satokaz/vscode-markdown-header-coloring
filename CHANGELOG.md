@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.1.10
+
+* Add support for Quarto (`.qmd`) files.
+* Add configuration `markdown-header-coloring.enabledLanguages` to control which languages are enabled (default: markdown, quarto).
+* Refactor: Consolidated decoration logic into `triggerDecoration()` and re-run it on editor/configuration change events for consistency.
+
 ## 0.1.9
 
 * Ignore YAML front matter comments: issue#30

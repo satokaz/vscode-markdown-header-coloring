@@ -1,351 +1,357 @@
 {
-    "name": "vscode-markdown-header-coloring",
-    "displayName": "Markdown Header Coloring",
-    "description": "This extension decorates the Markdown header on the editor",
-    "version": "0.1.9",
-    "publisher": "satokaz",
-    "homepage": "https://github.com/satokaz/vscode-markdown-header-coloring",
-    "icon": "images/icon.png",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/satokaz/vscode-markdown-header-coloring"
+  "name": "vscode-markdown-header-coloring",
+  "displayName": "Markdown Header Coloring",
+  "description": "This extension decorates the Markdown header on the editor",
+  "version": "0.1.10",
+  "publisher": "satokaz",
+  "homepage": "https://github.com/satokaz/vscode-markdown-header-coloring",
+  "icon": "images/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/satokaz/vscode-markdown-header-coloring"
+  },
+  "engines": {
+    "vscode": "^1.61.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
     },
-    "engines": {
-        "vscode": "^1.61.0"
-    },
-    "categories": [
-        "Other"
-    ],
-    "capabilities": {
-        "untrustedWorkspaces": {
-            "supported": true
+    "virtualWorkspaces": true
+  },
+  "activationEvents": [
+    "onLanguage:markdown",
+    "onLanguage:quarto"
+  ],
+  "main": "./dist/extension",
+  "browser": "./dist/web/extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "Markdown Header Coloring",
+      "properties": {
+        "markdown-header-coloring.destroyMode": {
+          "type": "boolean",
+          "enum": [
+            true,
+            false
+          ],
+          "default": false,
+          "description": ""
         },
-        "virtualWorkspaces": true
-    },
-    "activationEvents": [
-        "onLanguage:markdown"
-    ],
-    "main": "./dist/extension",
-    "browser": "./dist/web/extension.js",
-    "contributes": {
-        "configuration": {
-            "title": "Markdown Header Coloring",
-            "properties": {
-                "markdown-header-coloring.destroyMode": {
-                    "type": "boolean",
-                    "enum": [
-                        true,
-                        false
-                    ],
-                    "default": false,
-                    "description": ""
+        "markdown-header-coloring.textDecoration": {
+          "type": "string",
+          "default": "font-size: 1.0em; text-shadow: 2px 2px 3px rgba(0,0,0,0.5)"
+        },
+        "markdown-header-coloring.fontColor": {
+          "type": [
+            "string",
+            "boolean"
+          ],
+          "default": ""
+        },
+        "markdown-header-coloring.fontColorOpacity": {
+          "type": "number",
+          "default": 1
+        },
+        "markdown-header-coloring.backgroundColor": {
+          "type": [
+            "string",
+            "boolean"
+          ],
+          "default": ""
+        },
+        "markdown-header-coloring.backgroundColorOpacity": {
+          "type": "number",
+          "default": 0.1
+        },
+        "markdown-header-coloring.overviewRulerColor": {
+          "type": "number",
+          "default": ""
+        },
+        "markdown-header-coloring.userDefinedHeaderColor": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "enum": [
+                true,
+                false
+              ],
+              "default": false,
+              "description": "Enable user-defined header coloring (default: false)"
+            },
+            "Header_1": {
+              "type": "object",
+              "properties": {
+                "color": {
+                  "type": "string",
+                  "default": ""
                 },
-                "markdown-header-coloring.textDecoration": {
-                    "type": "string",
-                    "default": "font-size: 1.0em; text-shadow: 2px 2px 3px rgba(0,0,0,0.5)"
+                "backgroundColor": {
+                  "type": "string",
+                  "default": ""
                 },
-                "markdown-header-coloring.fontColor": {
-                    "type": [
-                        "string",
-                        "boolean"
-                    ],
-                    "default": ""
+                "textDecoration": {
+                  "type": "string",
+                  "default": ""
                 },
-                "markdown-header-coloring.fontColorOpacity": {
-                    "type": "number",
-                    "default": 1
-                },
-                "markdown-header-coloring.backgroundColor": {
-                    "type": [
-                        "string",
-                        "boolean"
-                    ],
-                    "default": ""
-                },
-                "markdown-header-coloring.backgroundColorOpacity": {
-                    "type": "number",
-                    "default": 0.1
-                },
-                "markdown-header-coloring.overviewRulerColor": {
-                    "type": "number",
-                    "default": ""
-                },
-                "markdown-header-coloring.userDefinedHeaderColor": {
-                    "type": "object",
-                    "properties": {
-                        "enabled": {
-                            "type": "boolean",
-                            "enum": [
-                                true,
-                                false
-                            ],
-                            "default": false,
-                            "description": "Enable user-defined header coloring (default: false)"
-                        },
-                        "Header_1": {
-                            "type": "object",
-                            "properties": {
-                                "color": {
-                                    "type": "string",
-                                    "default": ""
-                                },
-                                "backgroundColor": {
-                                    "type": "string",
-                                    "default": ""
-                                },
-                                "textDecoration": {
-                                    "type": "string",
-                                    "default": ""
-                                },
-                                "overviewRulerColor": {
-                                    "type": "string",
-                                    "default": ""
-                                }
-                            }
-                        },
-                        "Header_2": {
-                            "type": "object",
-                            "properties": {
-                                "color": {
-                                    "type": "string",
-                                    "default": ""
-                                },
-                                "backgroundColor": {
-                                    "type": "string",
-                                    "default": ""
-                                },
-                                "textDecoration": {
-                                    "type": "string",
-                                    "default": ""
-                                },
-                                "overviewRulerColor": {
-                                    "type": "string",
-                                    "default": ""
-                                }
-                            }
-                        },
-                        "Header_3": {
-                            "type": "object",
-                            "properties": {
-                                "color": {
-                                    "type": "string",
-                                    "default": ""
-                                },
-                                "backgroundColor": {
-                                    "type": "string",
-                                    "default": ""
-                                },
-                                "textDecoration": {
-                                    "type": "string",
-                                    "default": ""
-                                },
-                                "overviewRulerColor": {
-                                    "type": "string",
-                                    "default": ""
-                                }
-                            }
-                        },
-                        "Header_4": {
-                            "type": "object",
-                            "properties": {
-                                "color": {
-                                    "type": "string",
-                                    "default": ""
-                                },
-                                "backgroundColor": {
-                                    "type": "string",
-                                    "default": ""
-                                },
-                                "textDecoration": {
-                                    "type": "string",
-                                    "default": ""
-                                },
-                                "overviewRulerColor": {
-                                    "type": "string",
-                                    "default": ""
-                                }
-                            }
-                        },
-                        "Header_5": {
-                            "type": "object",
-                            "properties": {
-                                "color": {
-                                    "type": "string",
-                                    "default": ""
-                                },
-                                "backgroundColor": {
-                                    "type": "string",
-                                    "default": ""
-                                },
-                                "textDecoration": {
-                                    "type": "string",
-                                    "default": ""
-                                },
-                                "overviewRulerColor": {
-                                    "type": "string",
-                                    "default": ""
-                                }
-                            }
-                        },
-                        "Header_6": {
-                            "type": "object",
-                            "properties": {
-                                "color": {
-                                    "type": "string",
-                                    "default": ""
-                                },
-                                "backgroundColor": {
-                                    "type": "string",
-                                    "default": ""
-                                },
-                                "textDecoration": {
-                                    "type": "string",
-                                    "default": ""
-                                },
-                                "overviewRulerColor": {
-                                    "type": "string",
-                                    "default": ""
-                                }
-                            }
-                        }
-                    },
-                    "default": {
-                        "enabled": false,
-                        "Header_1": {
-                            "color": "",
-                            "backgroundColor": "",
-                            "textDecoration": "",
-                            "overviewRulerColor": ""
-                        },
-                        "Header_2": {
-                            "color": "",
-                            "backgroundColor": "",
-                            "textDecoration": "",
-                            "overviewRulerColor": ""
-                        },
-                        "Header_3": {
-                            "color": "",
-                            "backgroundColor": "",
-                            "textDecoration": "",
-                            "overviewRulerColor": ""
-                        },
-                        "Header_4": {
-                            "color": "",
-                            "backgroundColor": "",
-                            "textDecoration": "",
-                            "overviewRulerColor": ""
-                        },
-                        "Header_5": {
-                            "color": "",
-                            "backgroundColor": "",
-                            "textDecoration": "",
-                            "overviewRulerColor": ""
-                        },
-                        "Header_6": {
-                            "color": "",
-                            "backgroundColor": "",
-                            "textDecoration": "",
-                            "overviewRulerColor": ""
-                        }
-                    }
-                },
-                "markdown-header-coloring.colormapConfig": {
-                    "type": "object",
-                    "properties": {
-                        "colormap": {
-                            "type": "string",
-                            "description": "Color map name from the image above or a custom color scale",
-                            "enum": [
-                                "jet",
-                                "hsv",
-                                "hot",
-                                "cool",
-                                "spring",
-                                "summer",
-                                "autumn",
-                                "winter",
-                                "bone",
-                                "copper",
-                                "greys",
-                                "yignbu",
-                                "greens",
-                                "yiorrd",
-                                "bluered",
-                                "rdbu",
-                                "picnic",
-                                "rainbow",
-                                "portland",
-                                "blackbody",
-                                "earth",
-                                "electric",
-                                "alpha",
-                                "viridis",
-                                "inferno",
-                                "magma",
-                                "plasma",
-                                "warm",
-                                "cool",
-                                "rainbow-soft",
-                                "bathymetry",
-                                "cdom",
-                                "chlorophyll",
-                                "density",
-                                "freesurface-blue",
-                                "freesurface-red",
-                                "oxygen",
-                                "par",
-                                "phase",
-                                "salinity",
-                                "temperature",
-                                "turbidity",
-                                "velocity-blue",
-                                "velocity-green",
-                                "cubehelix"
-                            ]
-                        },
-                        "nshades": {
-                            "type": "number",
-                            "default": 20,
-                            "description": "Number of colors in returned array"
-                        }
-                    },
-                    "default": {
-                        "colormap": "hsv",
-                        "nshades": 20
-                    }
+                "overviewRulerColor": {
+                  "type": "string",
+                  "default": ""
                 }
+              }
+            },
+            "Header_2": {
+              "type": "object",
+              "properties": {
+                "color": {
+                  "type": "string",
+                  "default": ""
+                },
+                "backgroundColor": {
+                  "type": "string",
+                  "default": ""
+                },
+                "textDecoration": {
+                  "type": "string",
+                  "default": ""
+                },
+                "overviewRulerColor": {
+                  "type": "string",
+                  "default": ""
+                }
+              }
+            },
+            "Header_3": {
+              "type": "object",
+              "properties": {
+                "color": {
+                  "type": "string",
+                  "default": ""
+                },
+                "backgroundColor": {
+                  "type": "string",
+                  "default": ""
+                },
+                "textDecoration": {
+                  "type": "string",
+                  "default": ""
+                },
+                "overviewRulerColor": {
+                  "type": "string",
+                  "default": ""
+                }
+              }
+            },
+            "Header_4": {
+              "type": "object",
+              "properties": {
+                "color": {
+                  "type": "string",
+                  "default": ""
+                },
+                "backgroundColor": {
+                  "type": "string",
+                  "default": ""
+                },
+                "textDecoration": {
+                  "type": "string",
+                  "default": ""
+                },
+                "overviewRulerColor": {
+                  "type": "string",
+                  "default": ""
+                }
+              }
+            },
+            "Header_5": {
+              "type": "object",
+              "properties": {
+                "color": {
+                  "type": "string",
+                  "default": ""
+                },
+                "backgroundColor": {
+                  "type": "string",
+                  "default": ""
+                },
+                "textDecoration": {
+                  "type": "string",
+                  "default": ""
+                },
+                "overviewRulerColor": {
+                  "type": "string",
+                  "default": ""
+                }
+              }
+            },
+            "Header_6": {
+              "type": "object",
+              "properties": {
+                "color": {
+                  "type": "string",
+                  "default": ""
+                },
+                "backgroundColor": {
+                  "type": "string",
+                  "default": ""
+                },
+                "textDecoration": {
+                  "type": "string",
+                  "default": ""
+                },
+                "overviewRulerColor": {
+                  "type": "string",
+                  "default": ""
+                }
+              }
             }
+          },
+          "default": {
+            "enabled": false,
+            "Header_1": {
+              "color": "",
+              "backgroundColor": "",
+              "textDecoration": "",
+              "overviewRulerColor": ""
+            },
+            "Header_2": {
+              "color": "",
+              "backgroundColor": "",
+              "textDecoration": "",
+              "overviewRulerColor": ""
+            },
+            "Header_3": {
+              "color": "",
+              "backgroundColor": "",
+              "textDecoration": "",
+              "overviewRulerColor": ""
+            },
+            "Header_4": {
+              "color": "",
+              "backgroundColor": "",
+              "textDecoration": "",
+              "overviewRulerColor": ""
+            },
+            "Header_5": {
+              "color": "",
+              "backgroundColor": "",
+              "textDecoration": "",
+              "overviewRulerColor": ""
+            },
+            "Header_6": {
+              "color": "",
+              "backgroundColor": "",
+              "textDecoration": "",
+              "overviewRulerColor": ""
+            }
+          }
+        },
+        "markdown-header-coloring.colormapConfig": {
+          "type": "object",
+          "properties": {
+            "colormap": {
+              "type": "string",
+              "description": "Color map name from the image above or a custom color scale",
+              "enum": [
+                "jet",
+                "hsv",
+                "hot",
+                "cool",
+                "spring",
+                "summer",
+                "autumn",
+                "winter",
+                "bone",
+                "copper",
+                "greys",
+                "yignbu",
+                "greens",
+                "yiorrd",
+                "bluered",
+                "rdbu",
+                "picnic",
+                "rainbow",
+                "portland",
+                "blackbody",
+                "earth",
+                "electric",
+                "alpha",
+                "viridis",
+                "inferno",
+                "magma",
+                "plasma",
+                "warm",
+                "cool",
+                "rainbow-soft",
+                "bathymetry",
+                "cdom",
+                "chlorophyll",
+                "density",
+                "freesurface-blue",
+                "freesurface-red",
+                "oxygen",
+                "par",
+                "phase",
+                "salinity",
+                "temperature",
+                "turbidity",
+                "velocity-blue",
+                "velocity-green",
+                "cubehelix"
+              ]
+            },
+            "nshades": {
+              "type": "number",
+              "default": 20,
+              "description": "Number of colors in returned array"
+            }
+          },
+          "default": {
+            "colormap": "hsv",
+            "nshades": 20
+          }
+        },
+        "markdown-header-coloring.enabledLanguages": {
+          "type": "array",
+          "default": ["markdown", "quarto"],
+          "description": "List of languages where the extension is enabled"
         }
-    },
-    "scripts": {
-        "vscode:prepublish": "webpack --mode production",
-        "webpack": "webpack --mode development",
-        "webpack-dev": "webpack --mode development --watch",
-        "compile": "webpack --mode none",
-        "watch": "webpack --mode none --watch",
-        "test-compile": "tsc -p ./",
-        "run-in-browser": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. ."
-    },
-    "devDependencies": {
-        "@types/vscode": "^1.61.0",
-        "@types/glob": "^7.1.4",
-        "@types/mocha": "^9.0.0",
-        "@types/node": "14.x",
-        "eslint": "^7.32.0",
-        "@typescript-eslint/eslint-plugin": "^4.32.0",
-        "@typescript-eslint/parser": "^4.32.0",
-        "glob": "^7.2.0",
-        "mocha": "^9.1.2",
-        "typescript": "^4.4.3",
-        "vscode-test": "^1.6.1",
-        "ts-loader": "^9.2.6",
-        "webpack": "^5.56.0",
-        "webpack-cli": "^4.8.0",
-        "terser-webpack-plugin": "^5.1.3",
-        "@vscode/test-web": "0.0.13",
-        "@vscode/test-electron": "^2.0.3"
-    },
-    "dependencies": {
-        "colormap": "^2.3.2"
+      }
     }
+  },
+  "scripts": {
+    "vscode:prepublish": "webpack --mode production",
+    "webpack": "webpack --mode development",
+    "webpack-dev": "webpack --mode development --watch",
+    "compile": "webpack --mode none",
+    "watch": "webpack --mode none --watch",
+    "test-compile": "tsc -p ./",
+    "run-in-browser": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. ."
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.61.0",
+    "@types/glob": "^7.1.4",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "14.x",
+    "eslint": "^7.32.0",
+    "@typescript-eslint/eslint-plugin": "^4.32.0",
+    "@typescript-eslint/parser": "^4.32.0",
+    "glob": "^7.2.0",
+    "mocha": "^9.1.2",
+    "typescript": "^4.4.3",
+    "vscode-test": "^1.6.1",
+    "ts-loader": "^9.2.6",
+    "webpack": "^5.56.0",
+    "webpack-cli": "^4.8.0",
+    "terser-webpack-plugin": "^5.1.3",
+    "@vscode/test-web": "0.0.13",
+    "@vscode/test-electron": "^2.0.3"
+  },
+  "dependencies": {
+    "colormap": "^2.3.2"
+  }
 }

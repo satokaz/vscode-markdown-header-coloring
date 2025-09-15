@@ -12,6 +12,7 @@ let overviewRulerColor = vscode.workspace.getConfiguration('markdown-header-colo
 let afterTextDecoration = vscode.workspace.getConfiguration('markdown-header-coloring').get<string>('afterTextDecoration');
 let beforeTextDecoration = vscode.workspace.getConfiguration('markdown-header-coloring').get<string>('beforeTextDecoration');
 let userDefinedColormap: userDefinedColormapProperties = vscode.workspace.getConfiguration('markdown-header-coloring').get<object>('colormapConfig');
+let enabledLanguages = vscode.workspace.getConfiguration('markdown-header-coloring').get<string[]>('enabledLanguages');
 
 let colors: string[];
 let rainbowsLine = [];

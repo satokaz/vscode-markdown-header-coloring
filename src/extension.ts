@@ -1,65 +1,46 @@
-import * as vscode from 'vscode'
+import * as vscode from 'vscode';
 import { decorate, userDecorate } from './decorator';
-import { userDefinedHeaderProperties } from "./userDefinedHeaderProperties";
+import { userDefinedHeaderProperties } from './userDefinedHeaderProperties';
+
+// Helper to check for markdown or quarto
+function isLanguageEnabled(editor: vscode.TextEditor): boolean {
+    const enabledLanguages = vscode.workspace.
+        getConfiguration('markdown-header-coloring')
+        .get<string[]>('enabledLanguages');
+    return enabledLanguages.includes(editor.document.languageId);
+}
+
+// Main trigger function
+function triggerDecoration() {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor || !isLanguageEnabled(editor)) { 
+        return; 
+    }
+
+    const userDefinedHeaderColor: userDefinedHeaderProperties = vscode.workspace
+        .getConfiguration('markdown-header-coloring')
+        .get<object>('userDefinedHeaderColor');
+
+    if (userDefinedHeaderColor.enabled === false) {
+        decorate();
+    } else {
+        userDecorate();
+    }
+}
 
 export function activate(context: vscode.ExtensionContext) {
     console.log('Congratulations, your extension "vscode-ramarkdown-header-coloring" is now active!');
 
-    // let userDefinedHeaderColor;
-    // let userDefinedHeaderColor: Boolean = vscode.workspace.getConfiguration('markdown-header-coloring').get<Boolean>('userDefinedHeaderColor');
-    let userDefinedHeaderColor: userDefinedHeaderProperties = vscode.workspace.getConfiguration('markdown-header-coloring').get<object>('userDefinedHeaderColor');
+    // Initial trigger on activation
+    triggerDecoration();
 
-    
-    // if (!vscode.window.activeTextEditor) {
-        
-    // } else {
-    //     // editor = vscode.window.activeTextEditor;
-    //     if (vscode.window.activeTextEditor.document.languageId == 'markdown') {
-    //         (userDefinedHeaderColor.enabled === false) ? decorate() : userDecorate();
-    //         // userDecorate();
-    //     }    
-    // }
-
-
-    if (vscode.window.activeTextEditor.document.languageId == 'markdown') {
-        (userDefinedHeaderColor.enabled === false) ? decorate() : userDecorate();
-        // userDecorate();
-    }
-
-    // vscode.window.onDidChangeVisibleTextEditors(e => {
-    //     if (vscode.window.activeTextEditor.document.languageId == 'markdown') {
-    //         (userDefinedHeaderColor.enabled === false) ? decorate() : userDecorate();
-    //         // userDecorate();
-    //     }
-    // });
-
-    vscode.workspace.onDidChangeTextDocument(e => {
-        if (vscode.window.activeTextEditor.document.languageId == 'markdown') {
-            (userDefinedHeaderColor.enabled === false) ? decorate() : userDecorate();
-            // userDecorate();
-        }
-    });
-
-    vscode.workspace.onDidChangeConfiguration(e => {
-        if (vscode.window.activeTextEditor.document.languageId == 'markdown') {
-            (userDefinedHeaderColor.enabled === false) ? decorate() : userDecorate();
-            // userDecorate();
-        }
-    });
-
-    vscode.window.onDidChangeTextEditorViewColumn(e => {
-        if (vscode.window.activeTextEditor.document.languageId == 'markdown') {
-            (userDefinedHeaderColor.enabled === false) ? decorate() : userDecorate();
-            // userDecorate();
-        }
-    });
-
-    vscode.window.onDidChangeActiveTextEditor(e => {
-        if (vscode.window.activeTextEditor.document.languageId == 'markdown') {
-            (userDefinedHeaderColor.enabled === false) ? decorate() : userDecorate();
-            // userDecorate();
-        }
-    });
+    // Register events to re-trigger decoration
+    context.subscriptions.push(
+        vscode.workspace.onDidChangeTextDocument(triggerDecoration),
+        vscode.workspace.onDidChangeConfiguration(triggerDecoration),
+        vscode.window.onDidChangeTextEditorViewColumn(triggerDecoration),
+        vscode.window.onDidChangeActiveTextEditor(triggerDecoration)
+    );
 }
 
 export function deactivate() {}
