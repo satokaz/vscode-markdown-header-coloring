@@ -305,6 +305,8 @@ function codeblockParse(text) {
     let isFrontMatter: boolean = false;
     let isFrontMatterEnd: boolean = false;
     let seenFirstNonEmpty: boolean = false; // used to restrict front matter start to file top
+    let fenceChar: string | null = null; // '`' or '~'
+    let fenceLen: number = 0; // number of fence chars (3 or more)
     
     return text.split('\n').map(v => {
         
@@ -351,19 +353,32 @@ function codeblockParse(text) {
             }
         }
 
-        // CodeBlock
-        if (isCodeBlock === false) {
-            if (v.match(/(^```.*)/g)) {
+        // CodeBlock (support ``` or ~~~ fences; allow up to 3 leading spaces)
+        if (!isCodeBlock) {
+            const m = v.match(/^\s{0,3}(```+|~~~+)/);
+            if (m) {
                 isCodeBlock = true;
+                fenceChar = m[1][0];
+                fenceLen = m[1].length;
             }
         } else {
-            if(v.match(/^#{1,}.*/)) {
+            if (v.match(/^#{1,}.*/)) {
                 // console.log('v.match(/^#{1,}.*/) =', String(v.match(/^#{1,}.*/)).length);
                 v = v.replace(/^#/g, ' ');
             }
 
-            if (v.match(/(^```.*)/g)) {
-                isCodeBlock = false;
+            if (fenceChar) {
+                const fencePattern = new RegExp('^\\s{0,3}' + fenceChar.repeat(fenceLen) + '\\s*$');
+                if (fencePattern.test(v)) {
+                    isCodeBlock = false;
+                    fenceChar = null;
+                    fenceLen = 0;
+                }
+            } else {
+                // Fallback closure if fence unknown
+                if (/^```.*$/.test(v)) {
+                    isCodeBlock = false;
+                }
             }
         }
         return v;
