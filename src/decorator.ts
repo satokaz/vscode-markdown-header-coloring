@@ -307,6 +307,7 @@ function codeblockParse(text) {
     let seenFirstNonEmpty: boolean = false; // used to restrict front matter start to file top
     let fenceChar: string | null = null; // '`' or '~'
     let fenceLen: number = 0; // number of fence chars (3 or more)
+    let isIndentedCode: boolean = false; // 4-space or tab indented code block
     
     return text.split('\n').map(v => {
         
@@ -354,14 +355,17 @@ function codeblockParse(text) {
         }
 
         // CodeBlock (support ``` or ~~~ fences; allow up to 3 leading spaces)
-        if (!isCodeBlock) {
+        if (!isCodeBlock && !isIndentedCode) {
             const m = v.match(/^\s{0,3}(```+|~~~+)/);
             if (m) {
                 isCodeBlock = true;
                 fenceChar = m[1][0];
                 fenceLen = m[1].length;
+            } else if (/^(\t| {4})/.test(v)) {
+                // Start indented code block when line begins with a tab or 4 spaces
+                isIndentedCode = true;
             }
-        } else {
+        } else if (isCodeBlock) {
             if (v.match(/^#{1,}.*/)) {
                 // console.log('v.match(/^#{1,}.*/) =', String(v.match(/^#{1,}.*/)).length);
                 v = v.replace(/^#/g, ' ');
@@ -379,6 +383,16 @@ function codeblockParse(text) {
                 if (/^```.*$/.test(v)) {
                     isCodeBlock = false;
                 }
+            }
+        } else if (isIndentedCode) {
+            // While in indented code, neutralize headings the same way
+            if (v.match(/^#{1,}.*/)) {
+                v = v.replace(/^#/g, ' ');
+            }
+            // End indented code block when encountering a non-indented, non-empty line
+            // Empty lines are allowed within the block and keep it open
+            if (!/^(\t| {4})/.test(v) && v.trim() !== '') {
+                isIndentedCode = false;
             }
         }
         return v;
