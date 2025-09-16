@@ -1,5 +1,13 @@
 # Change Log
 
+## 0.1.11
+
+* Optimize re-decoration on edits: only re-run when the active editor exists, the changed document matches the active one, and the language is enabled. Reduces unnecessary work and improves responsiveness.
+* Minor robustness: normalize decoration colors from settings to valid strings to prevent type issues in rendering.
+* Fix: Prevent header coloring from breaking on horizontal rules (`---`). YAML front matter now only starts at the top of the file (first non-empty line) and strictly matches `---` (and ends on `---` or `...`). This avoids misclassifying in-body horizontal rules as front matter.
+* Improve fenced code block detection: support both backtick and tilde fences (``` and ~~~), allow up to 3 leading spaces (CommonMark), and require matching fence type and length for closure. Prevents false positives/negatives in complex layouts.
+* Add support for indented code blocks (4 spaces or a tab). Indented blocks persist across empty lines and end on the first non-indented, non-empty line.
+
 ## 0.1.10
 
 * Add support for Quarto (`.qmd`) files.
