@@ -304,6 +304,7 @@ function codeblockParse(text) {
     let isCodeBlock: boolean = false;
     let isFrontMatter: boolean = false;
     let isFrontMatterEnd: boolean = false;
+    let seenFirstNonEmpty: boolean = false; // used to restrict front matter start to file top
     
     return text.split('\n').map(v => {
         
@@ -328,20 +329,24 @@ function codeblockParse(text) {
         // }
 
         // yaml front matter
-        if(isFrontMatterEnd === false) {
+        if (isFrontMatterEnd === false) {
             if (isFrontMatter === false) {
-                if (v.match(/(^---.*)/g)) {
+                const trimmed = v.trim();
+                if (!seenFirstNonEmpty && /^---\s*$/.test(trimmed)) {
+                    // Only allow front matter to start at the very top (first non-empty line)
                     isFrontMatter = true;
+                } else if (trimmed !== "") {
+                    seenFirstNonEmpty = true;
                 }
             } else {
-                if(v.match(/^#{1,}.*/)) {
+                if (v.match(/^#{1,}.*/)) {
                     // console.log('v.match(/^#{1,}.*/) =', String(v.match(/^#{1,}.*/)).length);
                     v = v.replace(/^#/g, ' ');
                 }
-
-                if (v.match(/(^---.*)/g)) {
+                if (/^(---|\.\.\.)\s*$/.test(v.trim())) {
                     isFrontMatter = false;
                     isFrontMatterEnd = true;
+                    seenFirstNonEmpty = true;
                 }
             }
         }
