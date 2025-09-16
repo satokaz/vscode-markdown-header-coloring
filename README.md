@@ -36,6 +36,82 @@ This extension contributes the following settings:
       ]
       ```
 
+## Re-decoration Triggers
+
+The extension re-applies header decorations on the following events:
+- When the active document changes (tab switch)
+- When the editor view column changes
+- When relevant configuration changes
+- When the active document is edited and all of the following hold:
+   - There is an active editor
+   - The changed document is the active document
+   - The language is included in `markdown-header-coloring.enabledLanguages`
+
+This reduces unnecessary work and keeps the UI responsive when editing multiple files.
+
+## Parsing Rules (Front matter / Code blocks)
+
+To avoid coloring headers inside non-content regions, the extension preprocesses the text before decoration:
+
+- Front matter (YAML):
+   - Recognized only if the first non-empty line is exactly `---`.
+   - Ends on a line that is exactly `---` or `...`.
+   - Horizontal rules (`---`) in the body are NOT treated as front matter.
+- Fenced code blocks:
+   - Supports both backtick and tilde fences (``` and ~~~).
+   - Allows up to 3 leading spaces before the fence (CommonMark behavior).
+   - A code block closes only with the same fence character and length as it started with.
+   - Headings inside code blocks are ignored for coloring.
+  
+- Indented code blocks:
+   - Lines starting with a tab or 4 spaces open an indented code block when not already inside a code block.
+   - The block continues while lines remain indented (tabs or 4 spaces). Empty lines are allowed inside the block.
+   - The block ends when encountering a non-indented, non-empty line.
+   - Headings inside the block are ignored for coloring.
+
+   ### Examples
+
+   Front matter and horizontal rule:
+
+   ```markdown
+   ---
+   title: Sample
+   ---
+
+   # This is colored
+
+   ---
+
+   ## This is also colored
+   ```
+
+   Fenced code blocks (``` and ~~~):
+
+   ```markdown
+   ### This is colored
+
+   ```
+   ```python
+   # This is inside a fenced code block
+   # # Heading markers here are ignored
+   ```
+
+   ~~~
+   # Also inside a fenced block (tilde)
+   ~~~
+   ```
+
+   Indented code block (4 spaces / tab):
+
+   ```markdown
+   ### This is colored
+
+         # Indented code block line
+   	# Tab-indented code block line
+
+   #### This is colored again
+   ```
+
 
 * **`"markdown-header-coloring.colormapConfig`**
    - In the `"colormap"` setting, it is possible to select candidates for colormap.

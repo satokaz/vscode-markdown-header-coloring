@@ -63,6 +63,14 @@ if (userDefinedHeaderColor.enabled === true) {
 function generateDecorations(x:string) {
     // console.log('x =', x);
     // console.log(`rgba(${x}, ${fontColorOpacity})`);
+    const resolvedFontColor: string = (typeof fontColorSetting === 'string' && fontColorSetting !== '')
+        ? fontColorSetting
+        : (fontColorSetting === false ? '' : `rgba(${x}, ${fontColorOpacity})`);
+
+    const resolvedBackgroundColor: string = (typeof backgroundColor === 'string' && backgroundColor !== '')
+        ? backgroundColor
+        : (backgroundColor === false ? '' : `rgba(${x}, ${backgroundColorOpacity})`);
+
     return vscode.window.createTextEditorDecorationType({
         isWholeLine: true,
         // before: {
@@ -73,9 +81,9 @@ function generateDecorations(x:string) {
         //     contentText: "",
         //     textDecoration: `${afterTextDecoration}`
         // },
-        color: (fontColorSetting !== "") ? (fontColorSetting === false) ? "" : fontColorSetting : `rgba(${x}, ${fontColorOpacity})`,
+        color: resolvedFontColor,
         // color: (fontColorSetting === "") ? `rgba(${x}, ${fontColorOpacity})` : (fontColorSetting === false) ? "" : fontColorSetting,
-        backgroundColor: (backgroundColor === "" ) ? `rgba(${x}, ${backgroundColorOpacity})` : (backgroundColor == false ) ? "" : backgroundColor,
+        backgroundColor: resolvedBackgroundColor,
         overviewRulerColor: (overviewRulerColor === "") ? `rgba(${x}, 0.8)` : overviewRulerColor,
         rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed,
         textDecoration: 'none;' + textDecorationSetting,
@@ -296,6 +304,10 @@ function codeblockParse(text) {
     let isCodeBlock: boolean = false;
     let isFrontMatter: boolean = false;
     let isFrontMatterEnd: boolean = false;
+    let seenFirstNonEmpty: boolean = false; // used to restrict front matter start to file top
+    let fenceChar: string | null = null; // '`' or '~'
+    let fenceLen: number = 0; // number of fence chars (3 or more)
+    let isIndentedCode: boolean = false; // 4-space or tab indented code block
     
     return text.split('\n').map(v => {
         
@@ -320,37 +332,67 @@ function codeblockParse(text) {
         // }
 
         // yaml front matter
-        if(isFrontMatterEnd === false) {
+        if (isFrontMatterEnd === false) {
             if (isFrontMatter === false) {
-                if (v.match(/(^---.*)/g)) {
+                const trimmed = v.trim();
+                if (!seenFirstNonEmpty && /^---\s*$/.test(trimmed)) {
+                    // Only allow front matter to start at the very top (first non-empty line)
                     isFrontMatter = true;
+                } else if (trimmed !== "") {
+                    seenFirstNonEmpty = true;
                 }
             } else {
-                if(v.match(/^#{1,}.*/)) {
+                if (v.match(/^#{1,}.*/)) {
                     // console.log('v.match(/^#{1,}.*/) =', String(v.match(/^#{1,}.*/)).length);
                     v = v.replace(/^#/g, ' ');
                 }
-
-                if (v.match(/(^---.*)/g)) {
+                if (/^(---|\.\.\.)\s*$/.test(v.trim())) {
                     isFrontMatter = false;
                     isFrontMatterEnd = true;
+                    seenFirstNonEmpty = true;
                 }
             }
         }
 
-        // CodeBlock
-        if (isCodeBlock === false) {
-            if (v.match(/(^```.*)/g)) {
+        // CodeBlock (support ``` or ~~~ fences; allow up to 3 leading spaces)
+        if (!isCodeBlock && !isIndentedCode) {
+            const m = v.match(/^\s{0,3}(```+|~~~+)/);
+            if (m) {
                 isCodeBlock = true;
+                fenceChar = m[1][0];
+                fenceLen = m[1].length;
+            } else if (/^(\t| {4})/.test(v)) {
+                // Start indented code block when line begins with a tab or 4 spaces
+                isIndentedCode = true;
             }
-        } else {
-            if(v.match(/^#{1,}.*/)) {
+        } else if (isCodeBlock) {
+            if (v.match(/^#{1,}.*/)) {
                 // console.log('v.match(/^#{1,}.*/) =', String(v.match(/^#{1,}.*/)).length);
                 v = v.replace(/^#/g, ' ');
             }
 
-            if (v.match(/(^```.*)/g)) {
-                isCodeBlock = false;
+            if (fenceChar) {
+                const fencePattern = new RegExp('^\\s{0,3}' + fenceChar.repeat(fenceLen) + '\\s*$');
+                if (fencePattern.test(v)) {
+                    isCodeBlock = false;
+                    fenceChar = null;
+                    fenceLen = 0;
+                }
+            } else {
+                // Fallback closure if fence unknown
+                if (/^```.*$/.test(v)) {
+                    isCodeBlock = false;
+                }
+            }
+        } else if (isIndentedCode) {
+            // While in indented code, neutralize headings the same way
+            if (v.match(/^#{1,}.*/)) {
+                v = v.replace(/^#/g, ' ');
+            }
+            // End indented code block when encountering a non-indented, non-empty line
+            // Empty lines are allowed within the block and keep it open
+            if (!/^(\t| {4})/.test(v) && v.trim() !== '') {
+                isIndentedCode = false;
             }
         }
         return v;
