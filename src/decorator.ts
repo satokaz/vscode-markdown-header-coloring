@@ -63,6 +63,14 @@ if (userDefinedHeaderColor.enabled === true) {
 function generateDecorations(x:string) {
     // console.log('x =', x);
     // console.log(`rgba(${x}, ${fontColorOpacity})`);
+    const resolvedFontColor: string = (typeof fontColorSetting === 'string' && fontColorSetting !== '')
+        ? fontColorSetting
+        : (fontColorSetting === false ? '' : `rgba(${x}, ${fontColorOpacity})`);
+
+    const resolvedBackgroundColor: string = (typeof backgroundColor === 'string' && backgroundColor !== '')
+        ? backgroundColor
+        : (backgroundColor === false ? '' : `rgba(${x}, ${backgroundColorOpacity})`);
+
     return vscode.window.createTextEditorDecorationType({
         isWholeLine: true,
         // before: {
@@ -73,9 +81,9 @@ function generateDecorations(x:string) {
         //     contentText: "",
         //     textDecoration: `${afterTextDecoration}`
         // },
-        color: (fontColorSetting !== "") ? (fontColorSetting === false) ? "" : fontColorSetting : `rgba(${x}, ${fontColorOpacity})`,
+        color: resolvedFontColor,
         // color: (fontColorSetting === "") ? `rgba(${x}, ${fontColorOpacity})` : (fontColorSetting === false) ? "" : fontColorSetting,
-        backgroundColor: (backgroundColor === "" ) ? `rgba(${x}, ${backgroundColorOpacity})` : (backgroundColor == false ) ? "" : backgroundColor,
+        backgroundColor: resolvedBackgroundColor,
         overviewRulerColor: (overviewRulerColor === "") ? `rgba(${x}, 0.8)` : overviewRulerColor,
         rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed,
         textDecoration: 'none;' + textDecorationSetting,

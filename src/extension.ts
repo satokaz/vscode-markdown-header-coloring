@@ -36,7 +36,13 @@ export function activate(context: vscode.ExtensionContext) {
 
     // Register events to re-trigger decoration
     context.subscriptions.push(
-        vscode.workspace.onDidChangeTextDocument(triggerDecoration),
+        vscode.workspace.onDidChangeTextDocument((e: vscode.TextDocumentChangeEvent) => {
+            const editor = vscode.window.activeTextEditor;
+            if (!editor) { return; }
+            if (e.document.uri.toString() !== editor.document.uri.toString()) { return; }
+            if (!isLanguageEnabled(editor)) { return; }
+            triggerDecoration();
+        }),
         vscode.workspace.onDidChangeConfiguration(triggerDecoration),
         vscode.window.onDidChangeTextEditorViewColumn(triggerDecoration),
         vscode.window.onDidChangeActiveTextEditor(triggerDecoration)
