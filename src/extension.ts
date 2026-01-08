@@ -1,10 +1,18 @@
 import * as vscode from 'vscode';
 import { generateHeaderDecorations, refreshConfiguration, clearDocumentCache } from './decorator';
 import { decorate, userDecorate } from './decorator';
-import { userDefinedHeaderProperties } from "./userDefinedHeaderProperties";
+import { userDefinedHeaderProperties } from './userDefinedHeaderProperties';
+
+// Helper to check for enabled languages (markdown, quarto, etc.)
+function isLanguageEnabled(editor: vscode.TextEditor): boolean {
+    const enabledLanguages = vscode.workspace.
+        getConfiguration('markdown-header-coloring')
+        .get<string[]>('enabledLanguages');
+    return enabledLanguages.includes(editor.document.languageId);
+}
 
 export function activate(context: vscode.ExtensionContext) {
-    console.log('Congratulations, your extension "vscode-ramarkdown-header-coloring" is now active!');
+    console.log('Congratulations, your extension "vscode-markdown-header-coloring" is now active!');
 
     let userDefinedHeaderColor: userDefinedHeaderProperties = vscode.workspace.getConfiguration('markdown-header-coloring').get<userDefinedHeaderProperties>('userDefinedHeaderColor');
 
@@ -21,13 +29,13 @@ export function activate(context: vscode.ExtensionContext) {
         userDefinedHeaderColor = vscode.workspace.getConfiguration('markdown-header-coloring').get<userDefinedHeaderProperties>('userDefinedHeaderColor');
 
         // If specific editor provided, use it
-        if (editor && editor.document.languageId === 'markdown') {
+        if (editor && isLanguageEnabled(editor)) {
             userDefinedHeaderColor.enabled === false ? decorate(editor) : userDecorate(editor);
             return;
         }
 
         // Otherwise use active editor
-        if (vscode.window.activeTextEditor && vscode.window.activeTextEditor.document.languageId === 'markdown') {
+        if (vscode.window.activeTextEditor && isLanguageEnabled(vscode.window.activeTextEditor)) {
             // Periodically force full update to prevent accumulated errors
             const now = Date.now();
             const shouldForceFullUpdate = (now - lastFullUpdate) > FULL_UPDATE_INTERVAL;
@@ -44,9 +52,9 @@ export function activate(context: vscode.ExtensionContext) {
         // Re-fetch the configuration
         userDefinedHeaderColor = vscode.workspace.getConfiguration('markdown-header-coloring').get<userDefinedHeaderProperties>('userDefinedHeaderColor');
         
-        // Apply decorations to all visible markdown editors
+        // Apply decorations to all visible enabled language editors
         vscode.window.visibleTextEditors.forEach(editor => {
-            if (editor.document.languageId === 'markdown') {
+            if (isLanguageEnabled(editor)) {
                 userDefinedHeaderColor.enabled === false ? decorate(editor) : userDecorate(editor);
             }
         });
@@ -70,16 +78,19 @@ export function activate(context: vscode.ExtensionContext) {
         }, DEBOUNCE_DELAY);
     }
 
-    // Check if a Markdown file is open before applying decoration
-    if (vscode.window.activeTextEditor && vscode.window.activeTextEditor.document.languageId == 'markdown') {
+    // Check if an enabled language file is open before applying decoration
+    if (vscode.window.activeTextEditor && isLanguageEnabled(vscode.window.activeTextEditor)) {
         handleEditorChange();
     }
 
     context.subscriptions.push(vscode.workspace.onDidChangeTextDocument(event => {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) { return; }
+        if (event.document.uri.toString() !== editor.document.uri.toString()) { return; }
+        if (!isLanguageEnabled(editor)) { return; }
+        
         // Clear cache for the changed document
-        if (event.document.languageId === 'markdown') {
-            clearDocumentCache(event.document.uri.toString());
-        }
+        clearDocumentCache(event.document.uri.toString());
         handleEditorChange(); // Use debounced update for text changes
     }));
     context.subscriptions.push(vscode.workspace.onDidChangeWorkspaceFolders(() => handleEditorChange()));
@@ -101,7 +112,7 @@ export function activate(context: vscode.ExtensionContext) {
                 // Refresh configuration and re-initialize decorations
                 refreshConfiguration();
                 
-                // Apply decorations to all visible markdown editors immediately
+                // Apply decorations to all visible enabled language editors immediately
                 applyDecorationsToAllVisibleEditors();
             }
         })

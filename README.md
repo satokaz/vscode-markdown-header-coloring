@@ -10,9 +10,11 @@ This extension provides the function of coloring the Markdown Header tag on the 
 
 By default, it will be colored according to the number of headers as shown in the screenshot above.
 
+Supported languages by default: `markdown`, `quarto` (Quarto .qmd). You can extend this via settings (see below).
+
 ## Requirements
 
-* This extension only applies to markdown documents.
+* This extension only applies to markdown-formatted documents, and is not guaranteed to work on other file formats. Quarto (`.qmd`) is supported by default.
 * No commands are provided.
 
 ## Extension Settings
@@ -20,6 +22,95 @@ By default, it will be colored according to the number of headers as shown in th
 Some settings use tricks to embed CSS.
 
 This extension contributes the following settings:
+
+* **`markdown-header-coloring.enabledLanguages`**
+   - Array of VS Code language IDs for which this extension is active.
+   - Default: `["markdown", "quarto"]`
+   - Example (enable for R Markdown as well):
+      ```jsonc
+      // settings.json
+      "markdown-header-coloring.enabledLanguages": [
+         "markdown",
+         "quarto",
+         "rmd"
+      ]
+      ```
+
+## Re-decoration Triggers
+
+The extension re-applies header decorations on the following events:
+- When the active document changes (tab switch)
+- When the editor view column changes
+- When relevant configuration changes
+- When the active document is edited and all of the following hold:
+   - There is an active editor
+   - The changed document is the active document
+   - The language is included in `markdown-header-coloring.enabledLanguages`
+
+This reduces unnecessary work and keeps the UI responsive when editing multiple files.
+
+## Parsing Rules (Front matter / Code blocks)
+
+To avoid coloring headers inside non-content regions, the extension preprocesses the text before decoration:
+
+- Front matter (YAML):
+   - Recognized only if the first non-empty line is exactly `---`.
+   - Ends on a line that is exactly `---` or `...`.
+   - Horizontal rules (`---`) in the body are NOT treated as front matter.
+- Fenced code blocks:
+   - Supports both backtick and tilde fences (``` and ~~~).
+   - Allows up to 3 leading spaces before the fence (CommonMark behavior).
+   - A code block closes only with the same fence character and length as it started with.
+   - Headings inside code blocks are ignored for coloring.
+  
+- Indented code blocks:
+   - Lines starting with a tab or 4 spaces open an indented code block when not already inside a code block.
+   - The block continues while lines remain indented (tabs or 4 spaces). Empty lines are allowed inside the block.
+   - The block ends when encountering a non-indented, non-empty line.
+   - Headings inside the block are ignored for coloring.
+
+   ### Examples
+
+   Front matter and horizontal rule:
+
+   ```markdown
+   ---
+   title: Sample
+   ---
+
+   # This is colored
+
+   ---
+
+   ## This is also colored
+   ```
+
+   Fenced code blocks (``` and ~~~):
+
+   ```markdown
+   ### This is colored
+
+   ```
+   ```python
+   # This is inside a fenced code block
+   # # Heading markers here are ignored
+   ```
+
+   ~~~
+   # Also inside a fenced block (tilde)
+   ~~~
+   ```
+
+   Indented code block (4 spaces / tab):
+
+   ```markdown
+   ### This is colored
+
+         # Indented code block line
+   	# Tab-indented code block line
+
+   #### This is colored again
+   ```
 
 
 * **`"markdown-header-coloring.colormapConfig`**
@@ -33,8 +124,6 @@ This extension contributes the following settings:
       "nshades": 20
    },
    ```
-
-
 
 
 
