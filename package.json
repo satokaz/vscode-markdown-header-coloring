@@ -11,7 +11,7 @@
         "url": "https://github.com/satokaz/vscode-markdown-header-coloring"
     },
     "engines": {
-        "vscode": "^1.80.0"
+        "vscode": "^1.87.0"
     },
     "categories": [
         "Other"
@@ -327,7 +327,7 @@
         "run-in-browser": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. ."
     },
     "devDependencies": {
-        "@types/vscode": "^1.85.0",
+        "@types/vscode": "^1.87.0",
         "@types/glob": "^7.1.4",
         "@types/mocha": "^9.0.0",
         "@types/node": "14.x",
