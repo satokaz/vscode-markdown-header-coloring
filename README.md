@@ -135,7 +135,7 @@ This extension contributes the following settings:
 
   Example combining `markdown-header-coloring.textDecoration` and `markdown-header-coloring.backgroundColor`.
 
-  Add the following to settings.json and execute `Reload Window` commmand:
+  Add the following to settings.json:
     
   ```json
   "markdown-header-coloring.textDecoration": "position: absolute, padding: 1px; font-size: 1.5em;text-transform: uppercase;background: linear-gradient(to right, #f00 0%, #f80 14.28%, #dd0 28.56%, #0d0 42.85%, #0dd 57.14%, #00f 71.42%, #e0e 85.71%, #f00 100%) 0% center / 200% auto;background-clip: text;-webkit-background-clip: text;text-fill-color: transparent;-webkit-text-fill-color: transparent;",
@@ -304,7 +304,8 @@ Example of using a local image file:
 
 ## Known Issues
 
-* `Reload Window` commmand or Restart of vscode instance is necessary to apply setting
+* Configuration changes are now automatically applied without requiring a window reload (as of version 0.2.0)
+* Previous versions required `Reload Window` command or restart of vscode instance to apply settings
 
 ## References
 
