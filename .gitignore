@@ -5,3 +5,5 @@ node_modules
 dist
 .vscode-test-web/
 test/
+.DS_Store
+ARCHITECTURE.md
