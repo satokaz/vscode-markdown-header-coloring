@@ -16,6 +16,7 @@ Supported languages by default: `markdown`, `quarto` (Quarto .qmd). You can exte
 
 * This extension only applies to markdown-formatted documents, and is not guaranteed to work on other file formats. Quarto (`.qmd`) is supported by default.
 * No commands are provided.
+* VS Code version 1.87.0 or later is required.
 
 ## Extension Settings
 
@@ -35,6 +36,86 @@ This extension contributes the following settings:
          "rmd"
       ]
       ```
+
+## Re-decoration Triggers
+
+The extension re-applies header decorations on the following events:
+- When the active document changes (tab switch)
+- When the editor view column changes
+- When relevant configuration changes (automatically applied without reload)
+- When the active document is edited and all of the following hold:
+   - There is an active editor
+   - The changed document is the active document
+   - The language is included in `markdown-header-coloring.enabledLanguages`
+
+This reduces unnecessary work and keeps the UI responsive when editing multiple files. Text changes are debounced (300ms) to prevent excessive re-rendering during typing.
+
+## Parsing Rules (Front matter / Code blocks)
+
+To avoid coloring headers inside non-content regions, the extension preprocesses the text before decoration:
+
+- Front matter (YAML):
+   - Recognized only if the first non-empty line is exactly `---`.
+   - Ends on a line that is exactly `---` or `...`.
+   - Horizontal rules (`---`) in the body are NOT treated as front matter.
+- Fenced code blocks:
+   - Supports both backtick and tilde fences (``` and ~~~).
+   - Allows up to 3 leading spaces before the fence (CommonMark behavior).
+   - A code block closes only with the same fence character and length as it started with.
+   - Headings inside code blocks are ignored for coloring.
+  
+- Indented code blocks (v0.2.0+):
+   - Lines starting with a tab or 4 spaces open an indented code block when preceded by a blank line.
+   - Indented list items (starting with `- `, `* `, or `+ `) are NOT treated as code blocks.
+   - The block continues while lines remain indented (tabs or 4 spaces). Empty lines are allowed inside the block.
+   - The block ends when encountering a non-indented, non-empty line.
+   - Headings inside the block are ignored for coloring.
+
+   ### Examples
+
+   Front matter and horizontal rule:
+
+   ```markdown
+   ---
+   title: Sample
+   ---
+
+   # This is colored
+
+   ---
+
+   ## This is also colored
+   ```
+
+   Fenced code blocks (``` and ~~~):
+
+   ```markdown
+   ### This is colored
+
+   ```
+   ```python
+   # This is inside a fenced code block
+   # # Heading markers here are ignored
+   ```
+
+   ~~~
+   # Also inside a fenced block (tilde)
+   ~~~
+   ```
+ - requires blank line before:
+
+   ```markdown
+   ### This is colored
+
+         # Indented code block line
+   	# Tab-indented code block line
+
+   #### This is colored again
+
+   - # This is a list item (not code block)
+       - # This is an indented list item (not code block)
+   #### This is colored again
+   ```
 
 
 * **`"markdown-header-coloring.colormapConfig`**
@@ -148,7 +229,7 @@ This extension contributes the following settings:
 
   Example combining `markdown-header-coloring.textDecoration` and `markdown-header-coloring.backgroundColor`.
 
-  Add the following to settings.json and execute `Reload Window` commmand:
+  Add the following to settings.json:
     
   ```json
   "markdown-header-coloring.textDecoration": "position: absolute, padding: 1px; font-size: 1.5em;text-transform: uppercase;background: linear-gradient(to right, #f00 0%, #f80 14.28%, #dd0 28.56%, #0d0 42.85%, #0dd 57.14%, #00f 71.42%, #e0e 85.71%, #f00 100%) 0% center / 200% auto;background-clip: text;-webkit-background-clip: text;text-fill-color: transparent;-webkit-text-fill-color: transparent;",
@@ -310,6 +391,7 @@ Example of using a local image file:
 ```
 "backgroundColor": "background-image: url(/Users/kazus/Pictures/07_est.jpg);opacity: 0.2;"
 ```
+
 **Windows** 
 ```
 "backgroundColor": "background-image: url(file:///c:/Users/kazus/Desktop/test.jpg);opacity: 0.2;"
@@ -317,7 +399,11 @@ Example of using a local image file:
 
 ## Known Issues
 
-* `Reload Window` commmand or Restart of vscode instance is necessary to apply setting
+* None currently known
+* Previous versions (< 0.2.0) required `Reload Window` command to apply settings - this has been fixed
+
+* Configuration changes are now automatically applied without requiring a window reload (as of version 0.2.0)
+* Previous versions required `Reload Window` command or restart of vscode instance to apply settings
 
 ## References
 
