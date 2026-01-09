@@ -388,6 +388,7 @@ function codeblockParse(text: string): string {
     let fenceChar: string | null = null; // '`' or '~'
     let fenceLen: number = 0; // number of fence chars (3 or more)
     let isIndentedCode: boolean = false; // 4-space or tab indented code block
+    let prevLineWasBlank: boolean = true; // track if previous line was blank (for indented code detection)
     
     return text.split('\n').map(v => {
         
@@ -441,8 +442,9 @@ function codeblockParse(text: string): string {
                 isCodeBlock = true;
                 fenceChar = m[1][0];
                 fenceLen = m[1].length;
-            } else if (/^(\t| {4})/.test(v)) {
-                // Start indented code block when line begins with a tab or 4 spaces
+            } else if (prevLineWasBlank && /^(\t| {4})/.test(v) && !/^(\t| {4})\s*[-*+]\s/.test(v)) {
+                // Start indented code block only after a blank line
+                // and exclude indented list items (-, *, +)
                 isIndentedCode = true;
             }
         } else if (isCodeBlock) {
@@ -475,6 +477,10 @@ function codeblockParse(text: string): string {
                 isIndentedCode = false;
             }
         }
+        
+        // Update prevLineWasBlank for next iteration
+        prevLineWasBlank = v.trim() === '';
+        
         return v;
     }).join('\n');
 }
