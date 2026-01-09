@@ -16,6 +16,7 @@ Supported languages by default: `markdown`, `quarto` (Quarto .qmd). You can exte
 
 * This extension only applies to markdown-formatted documents, and is not guaranteed to work on other file formats. Quarto (`.qmd`) is supported by default.
 * No commands are provided.
+* VS Code version 1.87.0 or later is required.
 
 ## Extension Settings
 
@@ -41,13 +42,13 @@ This extension contributes the following settings:
 The extension re-applies header decorations on the following events:
 - When the active document changes (tab switch)
 - When the editor view column changes
-- When relevant configuration changes
+- When relevant configuration changes (automatically applied without reload)
 - When the active document is edited and all of the following hold:
    - There is an active editor
    - The changed document is the active document
    - The language is included in `markdown-header-coloring.enabledLanguages`
 
-This reduces unnecessary work and keeps the UI responsive when editing multiple files.
+This reduces unnecessary work and keeps the UI responsive when editing multiple files. Text changes are debounced (300ms) to prevent excessive re-rendering during typing.
 
 ## Parsing Rules (Front matter / Code blocks)
 
@@ -63,8 +64,9 @@ To avoid coloring headers inside non-content regions, the extension preprocesses
    - A code block closes only with the same fence character and length as it started with.
    - Headings inside code blocks are ignored for coloring.
   
-- Indented code blocks:
-   - Lines starting with a tab or 4 spaces open an indented code block when not already inside a code block.
+- Indented code blocks (v0.2.0+):
+   - Lines starting with a tab or 4 spaces open an indented code block when preceded by a blank line.
+   - Indented list items (starting with `- `, `* `, or `+ `) are NOT treated as code blocks.
    - The block continues while lines remain indented (tabs or 4 spaces). Empty lines are allowed inside the block.
    - The block ends when encountering a non-indented, non-empty line.
    - Headings inside the block are ignored for coloring.
@@ -100,8 +102,7 @@ To avoid coloring headers inside non-content regions, the extension preprocesses
    # Also inside a fenced block (tilde)
    ~~~
    ```
-
-   Indented code block (4 spaces / tab):
+ - requires blank line before:
 
    ```markdown
    ### This is colored
@@ -109,6 +110,10 @@ To avoid coloring headers inside non-content regions, the extension preprocesses
          # Indented code block line
    	# Tab-indented code block line
 
+   #### This is colored again
+
+   - # This is a list item (not code block)
+       - # This is an indented list item (not code block)
    #### This is colored again
    ```
 
@@ -386,12 +391,16 @@ Example of using a local image file:
 ```
 "backgroundColor": "background-image: url(/Users/kazus/Pictures/07_est.jpg);opacity: 0.2;"
 ```
+
 **Windows** 
 ```
 "backgroundColor": "background-image: url(file:///c:/Users/kazus/Desktop/test.jpg);opacity: 0.2;"
 ```
 
 ## Known Issues
+
+* None currently known
+* Previous versions (< 0.2.0) required `Reload Window` command to apply settings - this has been fixed
 
 * Configuration changes are now automatically applied without requiring a window reload (as of version 0.2.0)
 * Previous versions required `Reload Window` command or restart of vscode instance to apply settings
