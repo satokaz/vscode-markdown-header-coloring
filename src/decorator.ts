@@ -242,12 +242,6 @@ function getRandomInt(min: number, max: number): number {
 }
 
 export function decorate(editor?: vscode.TextEditor) {
-    // Re-fetch the configuration every time this function is called
-    userDefinedHeaderColor = vscode.workspace.getConfiguration('markdown-header-coloring').get<userDefinedHeaderProperties>('userDefinedHeaderColor');
-    
-    // Re-initialize decorations if configuration changed
-    initializeDecorations();
-
     // Use provided editor or active editor
     if (!editor) {
         if (!vscode.window.activeTextEditor) {
@@ -258,8 +252,6 @@ export function decorate(editor?: vscode.TextEditor) {
 
     // Use cached parsed content for better performance
     let text = getParsedContent(editor);
-    console.log("text =", text.split('\n'));
-    console.log("test =", text);
 
     let regex = /(^#{1,}\s.*)/gm;
     let decorators = colors.map(color => []);
@@ -321,18 +313,12 @@ export function decorate(editor?: vscode.TextEditor) {
     //     console.log(`decorators[${i}] =`, JSON.stringify(a).toString());
     // });
 
-    decorators.forEach(async (d, index) => {
+    decorators.forEach((d, index) => {
         editor.setDecorations(rainbowsLine[index], d);
     })
 }
 
 export function userDecorate(editor?: vscode.TextEditor) {
-    // Re-fetch the configuration every time this function is called
-    userDefinedHeaderColor = vscode.workspace.getConfiguration('markdown-header-coloring').get<userDefinedHeaderProperties>('userDefinedHeaderColor');
-    
-    // Re-initialize decorations if configuration changed
-    initializeDecorations();
-    
     // Use provided editor or active editor
     if (!editor) {
         if (!vscode.window.activeTextEditor) {
@@ -374,7 +360,7 @@ export function userDecorate(editor?: vscode.TextEditor) {
     //     console.log(`decorators[${i}] =`, JSON.stringify(a).toString());
     // });
 
-    decorators.forEach(async (d, index) => {
+    decorators.forEach((d, index) => {
         editor.setDecorations(rainbowsLine[index], d);
     });
 }

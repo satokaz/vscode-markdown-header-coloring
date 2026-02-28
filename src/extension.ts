@@ -49,14 +49,12 @@ export function activate(context: vscode.ExtensionContext) {
     }
 
     function applyDecorationsToAllVisibleEditors() {
-        // Re-fetch the configuration
         userDefinedHeaderColor = vscode.workspace.getConfiguration('markdown-header-coloring').get<userDefinedHeaderProperties>('userDefinedHeaderColor');
         
-        // Apply decorations to all visible enabled language editors
-        vscode.window.visibleTextEditors.forEach(editor => {
-            if (isLanguageEnabled(editor)) {
-                userDefinedHeaderColor.enabled === false ? decorate(editor) : userDecorate(editor);
-            }
+        const enabledEditors = vscode.window.visibleTextEditors.filter(editor => isLanguageEnabled(editor));
+        
+        enabledEditors.forEach(editor => {
+            userDefinedHeaderColor.enabled === false ? decorate(editor) : userDecorate(editor);
         });
     }
 
@@ -78,27 +76,43 @@ export function activate(context: vscode.ExtensionContext) {
         }, DEBOUNCE_DELAY);
     }
 
-    // Check if an enabled language file is open before applying decoration
-    if (vscode.window.activeTextEditor && isLanguageEnabled(vscode.window.activeTextEditor)) {
-        handleEditorChange();
-    }
+    // Apply decorations to all visible enabled language editors on activation
+    applyDecorationsToAllVisibleEditors();
 
     context.subscriptions.push(vscode.workspace.onDidChangeTextDocument(event => {
-        const editor = vscode.window.activeTextEditor;
-        if (!editor) { return; }
-        if (event.document.uri.toString() !== editor.document.uri.toString()) { return; }
-        if (!isLanguageEnabled(editor)) { return; }
+        // Find all visible editors displaying this document
+        const affectedEditors = vscode.window.visibleTextEditors.filter(
+            editor => editor.document.uri.toString() === event.document.uri.toString() && isLanguageEnabled(editor)
+        );
+        
+        if (affectedEditors.length === 0) { return; }
         
         // Clear cache for the changed document
         clearDocumentCache(event.document.uri.toString());
-        handleEditorChange(); // Use debounced update for text changes
+        
+        // Clear existing timer
+        if (debounceTimer) {
+            clearTimeout(debounceTimer);
+        }
+        
+        // Apply decorations to all affected editors after debounce
+        debounceTimer = setTimeout(() => {
+            userDefinedHeaderColor = vscode.workspace.getConfiguration('markdown-header-coloring').get<userDefinedHeaderProperties>('userDefinedHeaderColor');
+            affectedEditors.forEach(editor => {
+                userDefinedHeaderColor.enabled === false ? decorate(editor) : userDecorate(editor);
+            });
+        }, DEBOUNCE_DELAY);
     }));
-    context.subscriptions.push(vscode.workspace.onDidChangeWorkspaceFolders(() => handleEditorChange()));
-    context.subscriptions.push(vscode.window.onDidChangeTextEditorViewColumn(() => handleEditorChange()));
-    context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor(() => handleEditorChange()));
-    context.subscriptions.push(vscode.window.onDidChangeVisibleTextEditors(() => handleEditorChange()));
-    context.subscriptions.push(vscode.window.onDidChangeWindowState(() => handleEditorChange()));
-    context.subscriptions.push(vscode.window.onDidChangeTextEditorOptions(() => handleEditorChange()));
+    context.subscriptions.push(vscode.workspace.onDidChangeWorkspaceFolders(() => applyDecorationsToAllVisibleEditors()));
+    context.subscriptions.push(vscode.window.onDidChangeTextEditorViewColumn(() => applyDecorationsToAllVisibleEditors()));
+    context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor((editor) => {
+        if (editor && isLanguageEnabled(editor)) {
+            applyDecorations(editor);
+        }
+    }));
+    context.subscriptions.push(vscode.window.onDidChangeVisibleTextEditors(() => applyDecorationsToAllVisibleEditors()));
+    context.subscriptions.push(vscode.window.onDidChangeWindowState(() => applyDecorationsToAllVisibleEditors()));
+    context.subscriptions.push(vscode.window.onDidChangeTextEditorOptions(() => applyDecorationsToAllVisibleEditors()));
 
     // Handle configuration changes
     context.subscriptions.push(

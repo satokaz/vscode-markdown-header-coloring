@@ -1,5 +1,12 @@
 # Change Log
 
+## 0.2.1
+
+* **Bug Fix: Split-view decorations not applied to inactive editors (#40)**
+  - Root cause: `initializeDecorations()` was called on every `decorate()`/`userDecorate()` invocation, destroying all decoration types and leaving inactive editors undecorated
+  - Fix: Removed `initializeDecorations()` from `decorate()` and `userDecorate()` — decoration types are now stable and only recreated on configuration changes
+  - All visible editors in split view now maintain decorations independently of which editor is active
+
 ## 0.2.0
 
 * **Major Performance Improvements**
@@ -24,8 +31,9 @@
   - Prevent header coloring from breaking on horizontal rules (`---`)
 
 * **Multi-Editor Support**
-  - Support split-view scenarios with multiple Markdown editors
-  - Apply decorations to all visible editors simultaneously
+  - Fix split-view issue: decorations now apply to all visible editors (#40)
+  - Text changes now update all editors displaying the same document
+  - View state changes (split, move, focus) update all visible editors
   - Add applyDecorationsToAllVisibleEditors() function
 
 * **Code Block Improvements**
